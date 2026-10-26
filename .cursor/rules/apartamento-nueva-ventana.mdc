@@ -1,0 +1,37 @@
+---
+description: Los apartamentos del grid se abren en una pestaña nueva al hacer clic
+globs: js/ui/grid.js,js/ui/detail.js,index.html
+alwaysApply: false
+---
+
+# Apartamentos: abrir en ventana nueva
+
+Al trabajar con las tarjetas de inmuebles en el listado, el clic debe abrir el detalle en una **pestaña o ventana nueva**, no sustituir la página actual con navegación SPA.
+
+## Comportamiento esperado
+
+- Cada tarjeta del grid es un enlace (`<a>`) con `href` generado por `propertyUrl(id)`: en producción (GitHub Pages) → `/apartamento/{slug}/`; en `file://` o `localhost` → `index.html?inmueble={slug}` (no existe carpeta física `apartamento/`).
+- El enlace lleva `target="_blank"` y `rel="noopener noreferrer"`.
+- **No** usar `preventDefault` ni `showDetail()` en el clic de la tarjeta; el detalle se carga en la nueva pestaña vía `initPropertyFromUrl()` en `detail.js`.
+
+## Evitar
+
+```javascript
+// ❌ Navegación SPA en el mismo tab
+onclick="onCardClick(event, id)"  // con preventDefault + showDetail
+```
+
+## Patrón correcto
+
+```html
+<a class="card" href="${propertyUrl(p.id)}" target="_blank" rel="noopener noreferrer">
+```
+
+## Detalle en la nueva pestaña
+
+`initPropertyFromUrl()` resuelve el inmueble por path (`/apartamento/{slug}/`) o por query (`?inmueble={slug|id}`) y llama a `showDetail(id, { skipUrlUpdate: true })`. `pushPropertyUrl` solo deja `?lang=` en la barra de direcciones, sin duplicar `inmueble` si el path ya es canónico.
+
+## Excepciones
+
+- Cambio de idioma con un detalle abierto en la misma pestaña: sigue usando `showDetail` en `i18n.js`.
+- Enlaces internos “volver al inicio” (`showHome`) solo aplican dentro de una vista de detalle ya abierta.

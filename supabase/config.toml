@@ -1,0 +1,4 @@
+# Despliega con: supabase functions deploy resend-email
+# La clave publishable (sb_publishable_...) no es JWT; sin esto → 401 en el navegador.
+[functions.resend-email]
+verify_jwt = false

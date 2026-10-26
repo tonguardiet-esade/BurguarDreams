@@ -1,0 +1,6 @@
+# Netlify: rutas SEO de apartamentos → home con query (evita bucle del 404.html)
+/apartamento/:slug   /?inmueble=:slug   302
+/apartamento/:slug/  /?inmueble=:slug   302
+
+# Proxy same-origin → Edge Function (evita CORS / preflight 405 en el navegador)
+/api/resend-email  https://vtwyqhxfuiwjvzgptecb.supabase.co/functions/v1/resend-email  200
