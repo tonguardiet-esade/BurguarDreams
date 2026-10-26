@@ -1,0 +1,62 @@
+Burguar Dreams — Primeros pasos en Hostinger (sin tecnicismos)
+==============================================================
+
+¿Qué es "la API" y la "primera visita"?
+--------------------------------------
+No tienes que hacer nada especial. Cada vez que la intranet habla con el servidor
+(login, listados, Google…), PHP ejecuta los archivos de la carpeta /api/.
+Al subir public_html, la "primera visita" ocurre sola cuando entras al login o abres
+una URL de comprobación (abajo).
+
+PASO 1 — Subir archivos
+-----------------------
+En hPanel → Archivos → public_html, sube TODO el contenido de tu carpeta local
+public_html (sobrescribe lo antiguo), especialmente:
+  • api/   (Db.php, google-config.php, intranet-check.php, .env si lo usas)
+  • intranet/index.html
+  • intranet/assets/index-BuxPbV5j.js   ← login con Google (obligatorio)
+  • api/google-login.php                ← POST Google (obligatorio)
+  • api/google-config.php
+  • intranet/assets/index-oF2VcrzI.css
+  • DEPLOY-VERSION.txt (referencia de versión subida)
+  • data/burguar.db  (opcional; si no la subes, Hostinger conserva la suya)
+
+PASO 2 — Archivo .env (obligatorio para Google)
+-----------------------------------------------
+En public_html debe existir un archivo llamado .env (punto env).
+Dentro, una línea como:
+  GOOGLE_OAUTH_CLIENT_ID=897526788103-e5ligse6cmjl87fpqr5pi0mesqi040g0.apps.googleusercontent.com
+(Sin comillas. Sin espacios alrededor del =.)
+
+Si no subes .env, créalo en el File Manager de Hostinger en la raíz de public_html.
+
+PASO 3 — Comprobar en el navegador
+----------------------------------
+Abre esta URL (copiar y pegar):
+
+  https://burguardreams.com/api/intranet-check.php
+
+Deberías ver JSON con:
+  • "google_oauth_in_env": true
+  • "google_button_will_show": true
+  • "burguardreams_email_in_db": "burguardreams@gmail.com"
+
+Si google_oauth_in_env es false → falta GOOGLE_OAUTH_CLIENT_ID en .env.
+
+Abre también:
+
+  https://burguardreams.com/api/google-config.php
+
+Debe mostrar: {"enabled":true,"clientId":"897526788103-....apps.googleusercontent.com"}
+
+PASO 4 — Ver el botón de Google y el email nuevo
+------------------------------------------------
+1. Cierra sesión en la intranet (menú cuenta → Cerrar sesión).
+2. Ctrl + F5 en https://burguardreams.com/intranet/login
+3. Debe aparecer "Continue with Google" debajo de Entrar.
+4. Entra otra vez con usuario Burguardreams → arriba debe salir burguardreams@gmail.com
+   (si sigue el correo viejo, es caché de sesión: cerrar sesión + volver a entrar).
+
+PASO 5 — Probar Google
+----------------------
+Usa la cuenta Google burguardreams@gmail.com (la misma que está en la base de datos).

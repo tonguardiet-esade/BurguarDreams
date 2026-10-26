@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Burguar Dreams</title>
+<script>
+(function () {
+  var parts = location.pathname.split('/').filter(Boolean);
+  var siteRoot = '/';
+  /* Subcarpeta: GitHub Pages (/Repo/) o http.server desde el padre (/public_html/) */
+  if (parts.length && parts[0] !== 'apartamento' && parts[0] !== 'index.html') {
+    siteRoot = '/' + parts[0] + '/';
+  }
+  var slug = null;
+  var aptIdx = parts.indexOf('apartamento');
+  if (aptIdx >= 0 && parts[aptIdx + 1]) slug = parts[aptIdx + 1];
+  var target = location.origin + siteRoot;
+  var q = new URLSearchParams(location.search);
+  if (slug) q.set('inmueble', slug);
+  var qs = q.toString();
+  location.replace(target + (qs ? '?' + qs : ''));
+})();
+</script>
+</head>
+<body></body>
+</html>

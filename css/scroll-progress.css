@@ -1,0 +1,104 @@
+/*
+ * Indicador corto fijo a la derecha:
+ * % blanco sobre el hero (foto), negro sobre fondo claro.
+ */
+
+#scroll-progress {
+  position: fixed;
+  top: 50%;
+  right: 1.1rem;
+  transform: translateY(-50%);
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  width: 2.5rem;
+  pointer-events: none;
+}
+
+#scroll-progress[hidden] {
+  display: none !important;
+}
+
+#scroll-progress-label {
+  font-family: var(--font-body, "DM Sans", system-ui, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-align: center;
+  user-select: none;
+  min-height: 1em;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+/* Sobre la imagen del hero */
+#scroll-progress.is-on-hero #scroll-progress-label {
+  color: #ffffff;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 0 8px rgba(0, 0, 0, 0.35);
+}
+
+#scroll-progress.is-on-hero #progressBarContainer {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* Sobre fondo claro / resto de la página */
+#scroll-progress.is-on-light #scroll-progress-label {
+  color: #1a1a1a;
+  text-shadow: none;
+}
+
+#scroll-progress.is-on-light #progressBarContainer {
+  background: rgba(0, 0, 0, 0.14);
+}
+
+#progressBarContainer {
+  position: relative;
+  width: 4px;
+  height: 160px;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.14);
+  border-radius: 999px;
+  overflow: hidden;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+#progressBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  border-radius: inherit;
+  background: linear-gradient(180deg, #c4a57a 0%, #9e8d73 100%);
+  box-shadow: 0 0 8px rgba(158, 141, 115, 0.45);
+}
+
+[data-theme="dark"] #scroll-progress.is-on-hero #scroll-progress-label,
+[data-theme="dark"] #scroll-progress.is-on-light #scroll-progress-label {
+  color: #ffffff;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.65),
+    0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] #scroll-progress.is-on-hero #progressBarContainer,
+[data-theme="dark"] #scroll-progress.is-on-light #progressBarContainer {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+[data-theme="dark"] #progressBar {
+  background: linear-gradient(180deg, #a78bfa 0%, #67e8f9 100%);
+  box-shadow: 0 0 10px rgba(103, 232, 249, 0.35);
+}
+
+@media (max-width: 900px) {
+  #scroll-progress {
+    display: none !important;
+  }
+}

@@ -1,0 +1,104 @@
+/**
+ * Intro — capas (atrás → delante):
+ *   1. cortina negra
+ *   2. marca fija "Burguar Dreams"
+ *   3. web (sube y tapa la marca)
+ *   4. cortina blanca (sale primero)
+ */
+html.is-intro,
+html.is-intro body {
+  overflow: hidden !important;
+}
+
+.bd-curtain {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  pointer-events: none;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+}
+
+.bd-curtain--black {
+  z-index: 100001;
+  background: #000;
+}
+
+.bd-curtain--white {
+  z-index: 100004;
+  background: #fff;
+}
+
+.bd-intro-brand {
+  position: fixed;
+  inset: 0;
+  z-index: 100005; /* encima del blanco al inicio */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.bd-intro__brand {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  color: #1c1c1c !important;
+  transition: color 0.25s ease;
+}
+
+.bd-intro__brand span {
+  font-style: italic;
+  font-weight: 300;
+  color: #9e8d73 !important;
+}
+
+/* Fondo negro → texto claro */
+.bd-intro-brand.is-on-black {
+  z-index: 100002; /* detrás de la web para que la tape al subir */
+}
+
+.bd-intro-brand.is-on-black .bd-intro__brand {
+  color: #ffffff !important;
+}
+
+.bd-intro-brand.is-on-black .bd-intro__brand span {
+  color: #c8b79c !important;
+}
+
+.bd-intro__pct {
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: rgba(27, 27, 27, 0.45) !important;
+  font-variant-numeric: tabular-nums;
+  min-height: 1em;
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+.bd-intro-brand.is-on-black .bd-intro__pct {
+  color: rgba(255, 255, 255, 0.4) !important;
+  opacity: 0;
+}
+
+.bd-page {
+  position: relative;
+  min-height: 100%;
+}
+
+html.is-intro .bd-page {
+  z-index: 100003;
+  transform: translate3d(0, 100%, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+  background: var(--bg, #fff);
+}

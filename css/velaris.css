@@ -1,0 +1,32 @@
+/* Velaris WebGL — fondo detrás del mazo de apartamentos */
+
+.apartment-deck-velaris {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: #000;
+}
+
+.velaris,
+.velaris-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.velaris {
+  position: absolute;
+  inset: 0;
+}
+
+.velaris-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.velaris-fallback {
+  background: #0a0a0a;
+}

@@ -1,0 +1,120 @@
+/* Wave background — detrás del contenido de #guia
+   Colores fijos (día y noche): crema + marrón crema */
+
+.guide-section {
+  position: relative;
+  overflow: hidden;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 4rem var(--page-gutter, 4rem);
+  /* Fondo animación: crema (fijo día/noche) */
+  background: #F5F5F3 !important;
+  color: #1C1C1C !important;
+}
+.guide-waves,
+.guide-waves.waves-component {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  /* Transparente: el crema lo pinta solo .guide-section (evita capa opaca bajo el glass) */
+  background: transparent !important;
+}
+
+.waves-component {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  --x: -0.5rem;
+  --y: 50%;
+}
+
+.waves-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.waves-pointer-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  transform: translate3d(calc(var(--x) - 50%), calc(var(--y) - 50%), 0);
+  will-change: transform;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.guide-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 2.75rem 2.75rem;
+  overflow: hidden;
+  /*
+    Causa del “opaco”: blanco 8% sobre crema + blur(40px) disuelve las líneas
+    finas en una mancha crema. Fondo transparente + blur suave = se ve la animación.
+  */
+  background: transparent !important;
+  background-color: transparent !important;
+  backdrop-filter: blur(10px) saturate(100%);
+  -webkit-backdrop-filter: blur(10px) saturate(100%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.guide-inner::before,
+.guide-inner::after {
+  content: none;
+  display: none;
+}
+
+.guide-section h2 {
+  color: #1C1C1C !important;
+}
+
+.guide-body p {
+  color: #3A3A3A !important;
+}
+
+.guide-body a {
+  color: #9E8D73 !important;
+}
+
+.guide-body strong {
+  color: #1C1C1C !important;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .guide-section,
+[data-theme="light"] .guide-section,
+:root:not([data-theme="dark"]) .guide-section {
+  background: #F5F5F3 !important;
+  color: #1C1C1C !important;
+}
+
+[data-theme="dark"] .guide-section h2,
+[data-theme="dark"] .guide-body strong {
+  color: #1C1C1C !important;
+}
+
+[data-theme="dark"] .guide-body p {
+  color: #3A3A3A !important;
+}
+
+@media (max-width: 768px) {
+  .guide-section {
+    padding: 3rem max(var(--page-gutter), env(safe-area-inset-left)) 3.5rem max(var(--page-gutter), env(safe-area-inset-right));
+  }
+
+  .guide-inner {
+    padding: 1.75rem 1.25rem 2rem;
+    border-radius: 20px;
+  }
+}

@@ -1,0 +1,2 @@
+# La base SQLite no debe ser descargable por HTTP.
+Require all denied

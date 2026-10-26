@@ -1,0 +1,22 @@
+# Secrets / local config
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+
+# SQLite
+data/*.db
+data/*.db-journal
+
+# Deploy / local
+*.zip
+serve_8010.py.log
+.cursor/
+
+# API secrets (Hostinger)
+api/.env
+api/.env.*
+!api/.env.example

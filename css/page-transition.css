@@ -1,0 +1,62 @@
+/* Transición home ↔ ficha: fade de opacidad con desaceleración */
+
+.pt-root {
+  position: fixed;
+  inset: 0;
+  z-index: 120000;
+  pointer-events: none;
+  display: none;
+}
+
+.pt-root.is-active {
+  display: block;
+  pointer-events: auto;
+}
+
+.pt-veil {
+  position: absolute;
+  inset: 0;
+  background: var(--bg, #f7f5f2);
+  opacity: 0;
+  will-change: opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transition: opacity 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="dark"] .pt-veil {
+  background: var(--bg, #0c0c0c);
+}
+
+.pt-root.is-veil-in .pt-veil {
+  opacity: 1;
+}
+
+.pt-root.is-veil-out .pt-veil {
+  opacity: 0;
+  transition-duration: 1.15s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.pt-lock,
+body.pt-lock {
+  overflow: hidden !important;
+}
+
+#detail-view.pt-enter .detail-hero,
+#detail-view.pt-enter .detail-body {
+  animation: pt-detail-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+#detail-view.pt-enter .detail-body {
+  animation-delay: 0.08s;
+}
+
+@keyframes pt-detail-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

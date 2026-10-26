@@ -1,0 +1,499 @@
+/**
+ * Burguar Dreams — tema día / noche
+ * Día: blanco + carbón + taupe
+ * Noche: carbón + blanco + beige
+ */
+
+:root {
+  color-scheme: light;
+  /* Solo props baratas de pintar — box-shadow/filter matan el FPS */
+  --theme-ease: background-color 2s ease-out, color 2s ease-out,
+    border-color 2s ease-out;
+  --theme-vt-duration: 2s;
+  --theme-vt-ease: ease-out;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #1C1C1C;
+  --bg-secondary: #252525;
+  --surface: #2F2F2F;
+  --bg-elevated: #2F2F2F;
+  --input-bg: #252525;
+
+  --text: #FFFFFF;
+  --text-secondary: #E5E5E2;
+  --text-muted: #C8B79C;
+
+  --accent: #C8B79C;
+  --accent-light: #9E8D73;
+  --border: #3A3A3A;
+
+  --btn-primary: #FFFFFF;
+  --btn-on-primary: #1C1C1C;
+  --btn-accent: #C8B79C;
+  --btn-on-accent: #1C1C1C;
+  --btn-glow-fg: #1C1C1C;
+
+  --glow-brown-soft: #3A3530;
+  --glow-brown: #C8B79C;
+  --glow-brown-deep: #9E8D73;
+
+  /* Alias: textos claros; fondos de sección más oscuros */
+  --cream: #252525;
+  --sand: #3A3A3A;
+  --stone: #6B6B6B;
+  --warm-dark: #FFFFFF;
+  --warm-mid: #E5E5E2;
+  --white: #FFFFFF;
+}
+
+/* ── Base ── */
+html {
+  background-color: var(--bg);
+}
+
+body {
+  background: var(--bg) !important;
+  color: var(--text);
+  transition: var(--theme-ease);
+}
+
+/* ── Transiciones ── */
+#main-header,
+header,
+#home-view,
+#detail-view,
+.hero,
+.about-section,
+.guide-section,
+.properties-section,
+.corporate-section,
+.faq-section,
+.contact-section,
+.card,
+.card-info,
+.modal,
+.lang-dropdown,
+.cookie-banner,
+.footer-bar,
+.corp-feature,
+.spec-item,
+.detail-hero,
+.detail-sticky-cta,
+.detail-view-topbar,
+.form-group input,
+.form-group select,
+.form-group textarea {
+  transition: var(--theme-ease);
+}
+
+/* View Transition: crossfade en compositor (~60 fps). Sin pelear con CSS por elemento. */
+html.theme-vt,
+html.theme-vt body,
+html.theme-vt #main-header,
+html.theme-vt header,
+html.theme-vt #home-view,
+html.theme-vt #detail-view,
+html.theme-vt .hero,
+html.theme-vt .about-section,
+html.theme-vt .guide-section,
+html.theme-vt .properties-section,
+html.theme-vt .corporate-section,
+html.theme-vt .faq-section,
+html.theme-vt .contact-section,
+html.theme-vt .card,
+html.theme-vt .card-info,
+html.theme-vt .modal,
+html.theme-vt .lang-dropdown,
+html.theme-vt .cookie-banner,
+html.theme-vt .footer-bar,
+html.theme-vt .corp-feature,
+html.theme-vt .spec-item,
+html.theme-vt .detail-hero,
+html.theme-vt .detail-sticky-cta,
+html.theme-vt .detail-view-topbar,
+html.theme-vt .form-group input,
+html.theme-vt .form-group select,
+html.theme-vt .form-group textarea {
+  transition: none !important;
+}
+
+@supports (view-transition-name: none) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: var(--theme-vt-duration);
+    animation-timing-function: var(--theme-vt-ease);
+  }
+
+  ::view-transition-old(root) {
+    animation-name: theme-vt-fade-out;
+    z-index: 1;
+  }
+
+  ::view-transition-new(root) {
+    animation-name: theme-vt-fade-in;
+    z-index: 2;
+  }
+
+  ::view-transition-group(theme-toggle) {
+    animation-duration: 0.55s;
+    animation-timing-function: cubic-bezier(0.34, 1.35, 0.64, 1);
+  }
+}
+
+@keyframes theme-vt-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes theme-vt-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════
+   MODO OSCURO — superficies
+   ═══════════════════════════════════════════ */
+
+[data-theme="dark"] #home-view,
+[data-theme="dark"] #detail-view,
+[data-theme="dark"] .hero,
+[data-theme="dark"] .about-section,
+[data-theme="dark"] .properties-section,
+[data-theme="dark"] .corporate-section,
+[data-theme="dark"] .faq-section,
+[data-theme="dark"] .page-section:not(.contact-section):not(.guide-section) {
+  background-color: var(--bg) !important;
+  color: var(--text);
+}
+
+[data-theme="dark"] .about-section,
+[data-theme="dark"] .corporate-section,
+[data-theme="dark"] .faq-section {
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .card-info,
+[data-theme="dark"] .card-placeholder,
+[data-theme="dark"] .corp-feature,
+[data-theme="dark"] .spec-item,
+[data-theme="dark"] .modal,
+[data-theme="dark"] .lang-dropdown,
+[data-theme="dark"] .cookie-banner,
+[data-theme="dark"] .cookie-panel,
+[data-theme="dark"] .legal-panel,
+[data-theme="dark"] .detail-hero,
+[data-theme="dark"] .detail-hero-placeholder,
+[data-theme="dark"] .detail-body,
+[data-theme="dark"] .amenity-item,
+[data-theme="dark"] .form-extra {
+  background-color: var(--surface) !important;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .grid .card:not(.card-scroll) {
+  box-shadow: none;
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .grid .card.card-scroll {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .card:not(.card-scroll):hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="dark"] header,
+[data-theme="dark"] #main-header {
+  background: color-mix(in srgb, var(--bg) 92%, transparent) !important;
+  border-bottom-color: var(--border) !important;
+}
+
+[data-theme="dark"] .header-top {
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .detail-sticky-cta,
+[data-theme="dark"] .detail-view-topbar {
+  background: color-mix(in srgb, var(--bg) 96%, transparent) !important;
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .hero-bg {
+  filter: brightness(0.4) saturate(1.05);
+}
+
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group select,
+[data-theme="dark"] .form-group textarea {
+  background: var(--input-bg) !important;
+  color: var(--text);
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .form-group input:focus,
+[data-theme="dark"] .form-group select:focus,
+[data-theme="dark"] .form-group textarea:focus {
+  background: var(--surface) !important;
+}
+
+[data-theme="dark"] .form-group input::placeholder,
+[data-theme="dark"] .form-group textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .count-badge {
+  background: var(--bg-secondary);
+  color: var(--text);
+}
+
+[data-theme="dark"] .lang-option:hover {
+  background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .faq-item {
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .corporate-features,
+[data-theme="dark"] .specs-grid {
+  background: var(--bg-secondary);
+  border-color: var(--border);
+}
+
+/* Contacto y pie: siempre carbón de marca (mismo tono, sin franja más negra) */
+.contact-section {
+  background: var(--brand-ink) !important;
+}
+
+[data-theme="dark"] .contact-section {
+  background: var(--brand-ink) !important;
+}
+
+.footer-bar,
+[data-theme="dark"] .footer-bar {
+  background: transparent !important;
+}
+
+[data-theme="dark"] option {
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* Día: secciones alternas suaves */
+:root:not([data-theme="dark"]) .about-section,
+:root:not([data-theme="dark"]) .corporate-section,
+:root:not([data-theme="dark"]) .faq-section {
+  background-color: var(--bg-secondary);
+}
+
+:root:not([data-theme="dark"]) .card {
+  border-color: var(--border);
+}
+
+/* ── Interruptor Sol / Luna — misma altura y trazo que .lang-btn ── */
+.theme-toggle {
+  /* Altura ≈ .lang-btn: padding 0.4rem×2 + línea ~0.75rem + borde 1px×2 */
+  --tt-h: calc(0.8rem + 0.9rem + 2px);
+  /* Ancho suficiente para que el thumb no tape sol/luna */
+  --tt-w: 68px;
+  --tt-pad: 2px;
+  --tt-thumb: calc(var(--tt-h) - 2px - var(--tt-pad) * 2);
+  --tt-travel: calc(var(--tt-w) - var(--tt-pad) * 2 - var(--tt-thumb) - 2px);
+  --tt-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --tt-dur: 0.42s;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: var(--tt-w);
+  height: var(--tt-h);
+  padding: var(--tt-pad);
+  border-radius: var(--btn-radius, 2rem);
+  /* Mismo borde que .lang-btn (color + grosor) */
+  border: 1px solid var(--stone);
+  /* Igual que .lang-btn: sin relleno blanco; se ve el crema del header */
+  background: none;
+  box-shadow: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  overflow: hidden;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  view-transition-name: theme-toggle;
+  transition: background var(--tt-dur) var(--tt-ease), border-color var(--tt-dur) var(--tt-ease);
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+[data-theme="dark"] .theme-toggle {
+  border-color: var(--stone);
+  background: none;
+  box-shadow: none;
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.theme-toggle:active {
+  transform: none;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+}
+
+.theme-toggle__defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Capas neumórficas: desactivadas (temática flat) */
+.theme-toggle__groove,
+.theme-toggle__gloss,
+.theme-toggle__ao {
+  display: none;
+}
+
+.theme-toggle__track-icons {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 9px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.theme-toggle__sun,
+.theme-toggle__moon,
+.theme-toggle__thumb-sun,
+.theme-toggle__thumb-moon {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.theme-toggle__sun {
+  color: var(--accent, #9E8D73);
+  transition: color var(--tt-dur) var(--tt-ease), opacity var(--tt-dur) var(--tt-ease);
+}
+
+.theme-toggle__moon {
+  color: var(--warm-mid, #3A3A3A);
+  transition: color var(--tt-dur) var(--tt-ease), opacity var(--tt-dur) var(--tt-ease);
+}
+
+[data-theme="dark"] .theme-toggle__sun {
+  color: var(--accent-light, #C8B79C);
+}
+
+[data-theme="dark"] .theme-toggle__moon {
+  color: var(--accent-light, #C8B79C);
+}
+
+.theme-toggle__thumb {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tt-thumb);
+  height: var(--tt-thumb);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--stone, #C4B8A4);
+  background: var(--btn-accent, #9E8D73);
+  box-shadow: none;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  /* Solo transform → compositor GPU ~60fps */
+  transition:
+    transform var(--tt-dur) var(--tt-ease),
+    background var(--tt-dur) var(--tt-ease),
+    border-color var(--tt-dur) var(--tt-ease);
+}
+
+[data-theme="dark"] .theme-toggle__thumb {
+  transform: translate3d(var(--tt-travel), 0, 0);
+  border-color: var(--accent-light, #C8B79C);
+  background: var(--accent-light, #C8B79C);
+  box-shadow: none;
+}
+
+.theme-toggle__thumb-shine {
+  display: none;
+}
+
+.theme-toggle__particles {
+  display: none;
+}
+
+.theme-toggle__particle,
+.theme-toggle__particle-ring {
+  display: none;
+}
+
+.theme-toggle__thumb-icon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+}
+
+.theme-toggle__thumb-sun,
+.theme-toggle__thumb-moon {
+  grid-area: 1 / 1;
+  transition: opacity 0.28s var(--tt-ease);
+}
+
+.theme-toggle__thumb-sun {
+  color: var(--btn-on-accent, #FFFFFF);
+}
+
+.theme-toggle__thumb-moon {
+  color: var(--brand-ink, #1C1C1C);
+  opacity: 0;
+}
+
+[data-theme="dark"] .theme-toggle__thumb-sun {
+  opacity: 0;
+}
+
+[data-theme="dark"] .theme-toggle__thumb-moon {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .theme-toggle {
+    --tt-w: 64px;
+  }
+}
+
+/* Siempre animar el interruptor (Windows reduced-motion no lo mata) */
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle,
+  .theme-toggle__thumb,
+  .theme-toggle__thumb-sun,
+  .theme-toggle__thumb-moon,
+  .theme-toggle__sun,
+  .theme-toggle__moon {
+    transition-duration: 0.42s !important;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  .theme-toggle__particle-ring {
+    animation: none !important;
+  }
+}

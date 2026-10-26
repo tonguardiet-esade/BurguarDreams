@@ -1,0 +1,88 @@
+/* Variable Font Hover — nav principal */
+
+.vf-hover {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  white-space: nowrap;
+}
+
+.vf-hover .vf-letter,
+.vf-hover .vf-space {
+  display: inline-block;
+  will-change: font-variation-settings, font-weight;
+  transition-property: font-variation-settings, font-weight;
+  transition-timing-function: ease-out;
+}
+
+.nav-link.vf-hover .vf-letter,
+.nav-link.vf-hover .vf-space {
+  transition-timing-function: ease-out;
+}
+
+.vf-hover .vf-space {
+  width: 0.35em;
+}
+
+.nav-link.vf-hover {
+  font-variation-settings: 'wght' 400;
+  font-weight: 400;
+}
+
+.hero-cta .vf-hover .vf-letter {
+  color: inherit;
+}
+
+/* Móvil: vf-hover en botones no debe forzar nowrap ni flex por letra */
+@media (max-width: 900px) {
+  .hero-cta .vf-hover,
+  .btn-quiero .vf-hover,
+  .corp-cta-form-link .vf-hover,
+  .faq-cta .btn-quiero .vf-hover,
+  .btn-saber .vf-hover,
+  .btn-whatsapp .vf-hover,
+  .btn-contact-form .vf-hover,
+  .detail-sticky-btn .vf-hover,
+  .wa-header-btn .vf-hover {
+    display: inline !important;
+    flex-wrap: unset !important;
+    white-space: normal !important;
+    max-width: 100%;
+    font-size: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+    text-align: center;
+  }
+
+  .hero-cta .vf-hover .vf-letter,
+  .hero-cta .vf-hover .vf-space,
+  .btn-quiero .vf-hover .vf-letter,
+  .btn-quiero .vf-hover .vf-space,
+  .btn-saber .vf-hover .vf-letter,
+  .btn-saber .vf-hover .vf-space,
+  .btn-whatsapp .vf-hover .vf-letter,
+  .btn-whatsapp .vf-hover .vf-space,
+  .btn-contact-form .vf-hover .vf-letter,
+  .btn-contact-form .vf-hover .vf-space,
+  .corp-cta-form-link .vf-hover .vf-letter,
+  .corp-cta-form-link .vf-hover .vf-space,
+  .detail-sticky-btn .vf-hover .vf-letter,
+  .detail-sticky-btn .vf-hover .vf-space {
+    display: inline !important;
+  }
+
+  .hero-cta .vf-hover .vf-space,
+  .btn-quiero .vf-hover .vf-space,
+  .btn-whatsapp .vf-hover .vf-space,
+  .btn-saber .vf-hover .vf-space,
+  .btn-contact-form .vf-hover .vf-space,
+  .corp-cta-form-link .vf-hover .vf-space,
+  .detail-sticky-btn .vf-hover .vf-space {
+    width: 0.28em !important;
+  }
+
+  .wa-header-text.vf-hover,
+  .wa-header-text {
+    display: none !important;
+  }
+}

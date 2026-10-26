@@ -1,0 +1,22 @@
+# Includes internos no públicos; endpoints (auth/*.php, ping.php, etc.) sí.
+<IfModule mod_authz_core.c>
+  <FilesMatch "^(Env|Db|Auth|BurguarAuth|GoogleOAuth|BurguarContracts|Http|Mail|Passwords|Users|BurguarUsers|Utilities|BurguarUtilities|UtilityLedger|UtilityProvisions|_dispatch)\.php$">
+    Require all denied
+  </FilesMatch>
+  <FilesMatch "\.(py|pyc|pyo)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+
+DirectoryIndex index.php
+
+RewriteEngine On
+
+# Pasar Authorization a PHP (Hostinger / LiteSpeed)
+RewriteCond %{HTTP:Authorization} .
+RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+RewriteRule ^ index.php [QSA,L]

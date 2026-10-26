@@ -1,0 +1,60 @@
+Probar la intranet en LOCAL (Windows)
+=====================================
+
+Necesitas DOS terminales: API (Python) + interfaz (Vite).
+
+─── Terminal 1 — API + SQLite (puerto 8010) ───
+
+  Si algo falla con 404 en /api/google-config, cierra Python viejos en el 8010
+  (Administrador de tareas) y vuelve a arrancar serve_8010.py.
+
+  cd C:\Users\moham\Downloads\burguardreams.com\public_html
+  python serve_8010.py
+
+  Comprueba en el navegador:
+    http://127.0.0.1:8010/api/intranet-check
+    http://127.0.0.1:8010/api/google-config
+
+  Login directo en la API (opcional):
+    http://127.0.0.1:8010/intranet/   ← build de producción copiado en /intranet
+
+─── Terminal 2 — Intranet en desarrollo (puerto 5173) ───
+
+  cd C:\Users\moham\Downloads\burguardreams-intranet
+  npm install
+  npm run dev
+
+  Abre:
+    http://localhost:5173/intranet/login
+
+  Vite envía /api/* al 8010 automáticamente (vite.config.ts).
+
+─── .env (en public_html, raíz) ───
+
+  GOOGLE_OAUTH_CLIENT_ID=...apps.googleusercontent.com
+  GEMINI_API_KEY=...        (Copilot — Google AI Studio)
+  GEMINI_MODEL=gemini-2.0-flash
+  INTRANET_LOGIN_URL=http://localhost:5173/intranet/login
+
+  En Google Cloud → orígenes autorizados incluir:
+    http://localhost:5173
+    http://127.0.0.1:8010
+
+─── Credenciales de prueba ───
+
+  Usuario: Burguardreams
+  Contraseña: BCNBurguar123++
+
+  Google: cuenta burguardreams@gmail.com
+
+─── Copilot (IA) en local ───
+
+  Solo funciona con serve_8010.py (Python). El PHP de Hostinger no interviene.
+  Al arrancar debe salir: Copilot: ... (GEMINI=sí)
+  Tras cambiar .env: cierra Python y vuelve a ejecutar serve_8010.py
+
+─── Si el botón Google no sale ───
+
+  1) serve_8010.py en marcha
+  2) GOOGLE_OAUTH_CLIENT_ID en public_html\.env
+  3) Ctrl+F5 en el login

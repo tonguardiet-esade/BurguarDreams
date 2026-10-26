@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coverflow preview</title>
+  <link rel="stylesheet" href="css/coverflow-gallery.css?v=20261001n">
+  <style>
+    html, body { margin: 0; background: #f3f3f1; font-family: system-ui, sans-serif; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 2.5rem 1rem 3rem; }
+    h1 { font-size: 0.85rem; font-weight: 500; color: #888; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 1.5rem; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Preview coverflow vs original</h1>
+    <div id="preview" class="coverflow-host"></div>
+  </div>
+  <script src="js/ui/coverflow-gallery.js?v=20261001n"></script>
+  <script>
+    initCoverflowGallery(document.getElementById('preview'), {
+      items: [
+        { image: 'assets/images/properties/bruixa/Carrer.jpg', title: '1' },
+        { image: 'assets/images/properties/bruixa/Cuina.jpg', title: '2' },
+        { image: 'assets/images/properties/bruixa/Dormitori2.jpg', title: '3' },
+        { image: 'assets/images/properties/bruixa/Dormitori3.jpg', title: '4' },
+        { image: 'assets/images/properties/bruixa/Edifici.jpg', title: '5' },
+        { image: 'assets/images/properties/bruixa/Escriptori.jpg', title: '6' }
+      ]
+    });
+  </script>
+</body>
+</html>

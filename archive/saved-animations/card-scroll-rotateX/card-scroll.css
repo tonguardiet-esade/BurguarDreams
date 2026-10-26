@@ -1,0 +1,62 @@
+/* Scroll 3D por tarjeta — anula reglas de .card / .grid que bloquean el efecto */
+
+.properties-section,
+#properties-grid.grid,
+#properties-grid.card-scroll-grid {
+  overflow: visible !important;
+}
+
+.grid.card-scroll-grid {
+  perspective: none; /* la perspectiva va en el transform JS */
+  padding-block: 1rem 2.5rem;
+  gap: 1.25rem;
+}
+
+.card-scroll-stage {
+  display: block;
+  overflow: visible !important;
+  transform-style: preserve-3d;
+  /* Espacio para sombra / inclinación sin recortar */
+  padding-bottom: 0.35rem;
+}
+
+.card.card-scroll {
+  display: flex;
+  flex-direction: column;
+  transform-origin: center bottom;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
+  border-radius: 1.15rem;
+  border: 3px solid color-mix(in srgb, var(--text) 18%, transparent);
+  background: var(--surface, var(--bg-elevated, #fff));
+  /* Anula .card { overflow/transition/hover transform } */
+  overflow: visible !important;
+  transition: none !important;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card.card-scroll .card-img-wrap {
+  border-radius: 0.9rem 0.9rem 0 0;
+  overflow: hidden;
+}
+
+.card.card-scroll .card-info {
+  border-radius: 0 0 0.9rem 0.9rem;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .card.card-scroll {
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .grid .card.card-scroll {
+  box-shadow: none; /* el JS pone la sombra en inline */
+}
+
+@media (max-width: 768px) {
+  .card.card-scroll {
+    border-width: 2px;
+    border-radius: 1rem;
+  }
+}

@@ -1,0 +1,23 @@
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+.page-section { scroll-margin-top: var(--header-offset); }
+body {
+  font-family: var(--font-body);
+  background: var(--bg, #ffffff);
+  color: var(--warm-dark);
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+#home-view,
+#detail-view {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}

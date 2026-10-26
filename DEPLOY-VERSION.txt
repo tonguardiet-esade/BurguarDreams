@@ -1,0 +1,11 @@
+deployed_for=hostinger
+local_api_test=ALL_OK_20261026
+zip_ready=burguardreams-LISTO-HOSTINGER-API-INTRANET-LINUX.zip
+production_status=API_INCOMPLETE_login_404_until_zip_upload
+date=2026-10-25-rent-fix-c
+intranet_js=index-CYJRLkJz.js
+intranet_css=index-B7hGbCd-.css
+post_upload_checks=
+  1) https://burguardreams.com/api/intranet-check.php -> postgresql + ok
+  2) https://burguardreams.com/intranet/assets/index-CYJRLkJz.js -> JavaScript (no HTML)
+  3) Contratos -> renta mensual se queda tras Enter y F5

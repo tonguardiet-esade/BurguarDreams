@@ -1,0 +1,246 @@
+/* Custom video player — proporciones nativas, sin recorte */
+
+.detail-video {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-bottom: 2.5rem;
+  gap: 1rem;
+}
+
+.detail-video[hidden] {
+  display: none !important;
+}
+
+.detail-video-title {
+  width: 100%;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--warm-dark);
+  margin: 0;
+}
+
+.vp-shell {
+  position: relative;
+  width: 100%;
+  max-width: min(640px, 100%);
+  margin: 0 auto;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #111;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  outline: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  isolation: isolate;
+}
+
+.vp-shell.is-ready {
+  opacity: 1;
+  transform: none;
+}
+
+.vp-shell.is-fullscreen {
+  max-width: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.vp-shell.is-fullscreen .vp-video {
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  object-fit: contain;
+}
+
+/* Vídeo a tamaño natural: sin recorte; capa propia para evitar parpadeo con controles */
+.vp-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+  object-position: center;
+  background: #111;
+  cursor: pointer;
+  vertical-align: middle;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.vp-controls {
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  z-index: 2;
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 0.85rem 1rem;
+  border-radius: 1rem;
+  /* Sin backdrop-filter / filter:blur: provoca parpadeo del <video> al hover */
+  background: rgba(17, 17, 17, 0.92);
+  color: #fff;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 12px, 0);
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s;
+}
+
+.vp-controls.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0);
+  pointer-events: auto;
+}
+
+.vp-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+
+.vp-time {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  min-width: 2.25rem;
+  opacity: 0.95;
+}
+
+.vp-slider {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  touch-action: none;
+}
+
+.vp-vol-slider {
+  width: 5.5rem;
+  flex: 0 0 5.5rem;
+}
+
+.vp-slider-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: #fff;
+  transition: width 0.12s ease-out;
+}
+
+.vp-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.vp-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.vp-volume {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.vp-speeds {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.vp-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.vp-btn:hover {
+  background: rgba(17, 17, 17, 0.82);
+  transform: scale(1.06);
+}
+
+.vp-btn:active {
+  transform: scale(0.94);
+}
+
+.vp-btn.is-active {
+  background: rgba(17, 17, 17, 0.82);
+}
+
+.vp-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .vp-controls {
+    left: 0.35rem;
+    right: 0.35rem;
+    bottom: 0.35rem;
+    padding: 0.7rem 0.75rem;
+  }
+
+  .vp-vol-slider {
+    width: 3.5rem;
+    flex-basis: 3.5rem;
+  }
+
+  .vp-speeds .vp-btn {
+    min-width: 2rem;
+    padding: 0.3rem 0.35rem;
+    font-size: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vp-shell,
+  .vp-controls,
+  .vp-btn,
+  .vp-slider-fill {
+    transition: none !important;
+  }
+
+  .vp-shell {
+    opacity: 1;
+    transform: none;
+  }
+}

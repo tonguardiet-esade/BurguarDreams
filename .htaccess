@@ -1,0 +1,61 @@
+AddType video/mp4 .mp4
+DirectoryIndex index.php index.html
+Options -MultiViews -Indexes
+
+# --- Seguridad ---
+<FilesMatch "(?i)^(\.env|\.env\..*)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+<FilesMatch "(?i)\.(py|pyc|pyo|gs|sqlite|db|sql)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Pasar Authorization a PHP (Hostinger / LiteSpeed)
+  RewriteCond %{HTTP:Authorization} .
+  RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+  # Bloquear carpetas internas
+  RewriteRule ^(data|scripts)(/|$) - [F,L]
+  RewriteRule ^serve_8010\.py$ - [F,L]
+
+  # ========== INTRANET SPA (antes que -d, crítico en Hostinger) ==========
+  # Ficheros reales: /intranet/assets/*, favicon, etc.
+  RewriteCond %{REQUEST_URI} ^/intranet/
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+
+  # Recarga de /intranet/dashboard, /intranet/utilities, etc. → SPA
+  # Ruta absoluta: evita que LiteSpeed sirva el index.html de la web pública
+  RewriteCond %{REQUEST_URI} ^/intranet
+  RewriteRule ^ /intranet/index.html [L]
+
+  # ========== API ==========
+  RewriteCond %{REQUEST_URI} ^/api/
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+
+  RewriteRule ^api(?:/.*)?$ /api/index.php [QSA,L]
+
+  # ========== WEB PÚBLICA ==========
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  RewriteRule ^ /index.html [L]
+</IfModule>

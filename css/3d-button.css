@@ -1,0 +1,453 @@
+/* 3D Join-style button — tipografía y caja = .hero-cta (WhatsApp) */
+
+.hero-cta.bd-3d-btn,
+.bd-3d-btn {
+  /* Paleta marca = botones «Saber más» (taupe / beige) */
+  --bd3d-white: #FFFFFF;
+  --bd3d-purple-100: var(--glow-brown-soft, #F0EBE3);
+  --bd3d-purple-200: var(--accent-light, #C8B79C);
+  --bd3d-purple-300: var(--stone, #C4B8A4);
+  --bd3d-purple-400: var(--btn-accent, #9E8D73);
+  --bd3d-purple-500: color-mix(in srgb, var(--btn-accent, #9E8D73) 62%, #1C1C1C);
+  --bd3d-glow: color-mix(in srgb, var(--btn-accent, #9E8D73) 55%, transparent);
+  --bd3d-path-stroke: var(--glow-brown-soft, #F0EBE3);
+  --bd3d-radius: var(--btn-radius, 2rem);
+
+  /* Misma caja tipográfica que el CTA verde */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2.25rem;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  border-radius: var(--bd3d-radius);
+  outline: none;
+  cursor: pointer;
+  background: transparent !important;
+  border: 0 !important;
+  position: relative;
+  box-sizing: border-box;
+  width: max-content;
+  min-width: 13.5rem;
+  max-width: 100%;
+  height: auto;
+  color: inherit;
+  transform: none !important;
+  transition: none;
+  box-shadow: none !important;
+  flex-shrink: 0;
+  align-self: stretch;
+  overflow: visible;
+}
+
+.bd-3d-btn:hover,
+.bd-3d-btn:focus,
+.bd-3d-btn:active {
+  background: transparent !important;
+  color: inherit;
+  transform: none !important;
+  border: 0 !important;
+}
+
+/* Reserva la misma altura que el icono 18px del WhatsApp */
+.bd-3d-btn .bd-3d-btn__sizer {
+  visibility: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  min-height: 18px;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.bd-3d-btn .bd-3d-btn__bg {
+  display: none;
+}
+
+.bd-3d-btn .bd-3d-btn__bg::before,
+.bd-3d-btn .bd-3d-btn__bg::after {
+  content: none;
+}
+
+.bd-3d-btn .bd-3d-btn__wrap {
+  border-radius: inherit;
+  overflow: hidden;
+  position: absolute;
+  inset: 0;
+  transform: none;
+  padding: 2px;
+  background: var(--btn-accent, #9E8D73);
+  transition: none;
+  pointer-events: none;
+}
+
+.bd-3d-btn .bd-3d-btn__outline {
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  outline: none;
+  border-radius: inherit;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+/* Dos luces recorriendo el bordillo (180° desfasadas) */
+.bd-3d-btn .bd-3d-btn__outline::before,
+.bd-3d-btn .bd-3d-btn__outline::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140px;
+  height: 320px;
+  margin: -160px 0 0 -70px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    #fff 45%,
+    #fff 55%,
+    transparent 100%
+  );
+  will-change: transform;
+}
+
+.bd-3d-btn .bd-3d-btn__content {
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  position: relative;
+  height: 100%;
+  gap: 0.5rem;
+  padding: 0 0.75rem;
+  border-radius: inherit;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  transition: none;
+  background: var(--btn-accent, #9E8D73);
+  box-shadow: none;
+}
+
+.bd-3d-btn .bd-3d-btn__content::before {
+  display: none;
+  content: none;
+}
+
+.bd-3d-btn .bd-3d-btn__char {
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bd-3d-btn .bd-3d-btn__char span {
+  display: block;
+  color: transparent;
+  position: relative;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.bd-3d-btn .bd-3d-btn__char span.bd-3d-btn__gap {
+  margin-left: 5px;
+}
+
+.bd-3d-btn .bd-3d-btn__char--1 span.bd-3d-btn__gap {
+  margin-right: -3px;
+}
+
+.bd-3d-btn .bd-3d-btn__char--1 span {
+  animation: bd3d-charAppear 1.2s ease backwards calc(var(--i) * 0.03s);
+}
+
+.bd-3d-btn .bd-3d-btn__char--1 span::before,
+.bd-3d-btn .bd-3d-btn__char span::after {
+  content: attr(data-label);
+  position: absolute;
+  color: var(--btn-on-accent, #FFFFFF);
+  text-shadow: none;
+  left: 0;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.bd-3d-btn .bd-3d-btn__char span::before {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.bd-3d-btn .bd-3d-btn__char--2 {
+  position: absolute;
+  left: 1.35rem;
+}
+
+.bd-3d-btn .bd-3d-btn__char--2 span::after {
+  opacity: 1;
+}
+
+.bd-3d-btn .bd-3d-btn__icon {
+  animation: bd3d-resetArrow 0.8s cubic-bezier(0.7, -0.5, 0.3, 1.2) forwards;
+  z-index: 10;
+}
+
+.bd-3d-btn .bd-3d-btn__icon > div,
+.bd-3d-btn .bd-3d-btn__icon > div::before,
+.bd-3d-btn .bd-3d-btn__icon > div::after {
+  height: 3px;
+  border-radius: 1px;
+  background-color: var(--btn-on-accent, #FFFFFF);
+  box-shadow: none;
+}
+
+.bd-3d-btn .bd-3d-btn__icon > div::before,
+.bd-3d-btn .bd-3d-btn__icon > div::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  transform-origin: center right;
+  width: 10px;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.bd-3d-btn .bd-3d-btn__icon > div {
+  position: relative;
+  width: 18px;
+  height: 2px;
+  box-shadow: none;
+  transform: scale(0.9);
+  background: var(--btn-on-accent, #FFFFFF);
+}
+
+.bd-3d-btn .bd-3d-btn__icon > div::before {
+  transform: rotate(44deg);
+  top: 1px;
+  box-shadow: none;
+}
+
+.bd-3d-btn .bd-3d-btn__icon > div::after {
+  bottom: 1px;
+  transform: rotate(316deg);
+  box-shadow: none;
+  background: var(--btn-on-accent, #FFFFFF);
+}
+
+.bd-3d-btn .bd-3d-btn__path {
+  position: absolute;
+  z-index: 12;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  stroke-dasharray: 150 480;
+  stroke-dashoffset: 150;
+  pointer-events: none;
+  stroke: white;
+}
+
+.bd-3d-btn .bd-3d-btn__splash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  height: auto;
+  pointer-events: none;
+  stroke-dasharray: 60 60;
+  stroke-dashoffset: 60;
+  transform: translate(-17%, -31%);
+  stroke: var(--bd3d-purple-300);
+}
+
+/* STATES */
+.bd-3d-btn:hover .bd-3d-btn__char--1 span::before {
+  animation: bd3d-charAppear 0.7s ease calc(var(--i) * 0.03s);
+}
+
+.bd-3d-btn:hover .bd-3d-btn__char--1 span::after {
+  opacity: 1;
+  animation: bd3d-charDisappear 0.7s ease calc(var(--i) * 0.03s);
+}
+
+.bd-3d-btn:hover .bd-3d-btn__wrap {
+  transform: none;
+}
+
+.bd-3d-btn:hover .bd-3d-btn__outline {
+  opacity: 1;
+}
+
+.bd-3d-btn:hover .bd-3d-btn__outline::before {
+  animation: bd3d-spin 3s linear infinite !important;
+}
+
+.bd-3d-btn:hover .bd-3d-btn__outline::after {
+  animation: bd3d-spin 3s linear infinite !important;
+  animation-delay: -1.5s !important;
+}
+
+.bd-3d-btn:hover .bd-3d-btn__icon > div {
+  animation: bd3d-swingArrow 1s ease-in-out infinite !important;
+}
+
+.bd-3d-btn:hover .bd-3d-btn__icon > div::before {
+  animation: bd3d-rotateArrowLine 1s linear infinite !important;
+}
+
+.bd-3d-btn:hover .bd-3d-btn__icon > div::after {
+  animation: bd3d-rotateArrowLine2 1s linear infinite !important;
+}
+
+.bd-3d-btn:active .bd-3d-btn__content {
+  box-shadow: none;
+  filter: brightness(0.96);
+}
+
+.bd-3d-btn:active .bd-3d-btn__outline {
+  opacity: 0;
+}
+
+.bd-3d-btn:active .bd-3d-btn__wrap {
+  transform: none;
+}
+
+.bd-3d-btn:active .bd-3d-btn__splash {
+  animation: bd3d-splash 0.8s cubic-bezier(0.3, 0, 0, 1) forwards 0.05s;
+}
+
+.bd-3d-btn:focus .bd-3d-btn__path {
+  animation: bd3d-path 1.6s ease forwards 0.2s;
+}
+
+.bd-3d-btn:focus .bd-3d-btn__icon {
+  animation: bd3d-arrow 1s cubic-bezier(0.7, -0.5, 0.3, 1.5) forwards;
+}
+
+.bd-3d-btn .bd-3d-btn__char--2 span::after,
+.bd-3d-btn:focus .bd-3d-btn__char--1 span {
+  animation: bd3d-charDisappear 0.5s ease forwards calc(var(--i) * 0.03s);
+}
+
+.bd-3d-btn:focus .bd-3d-btn__char--2 span::after {
+  animation: bd3d-charAppear 1s ease backwards calc(var(--i) * 0.03s);
+}
+
+@keyframes bd3d-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes bd3d-charAppear {
+  0% {
+    transform: translateY(50%);
+    opacity: 0;
+    filter: blur(20px);
+  }
+  20% {
+    transform: translateY(70%);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-15%);
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes bd3d-charDisappear {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-70%);
+    opacity: 0;
+    filter: blur(3px);
+  }
+}
+
+@keyframes bd3d-arrow {
+  0% { opacity: 1; }
+  50% {
+    transform: translateX(60px);
+    opacity: 0;
+  }
+  51% {
+    transform: translateX(-200px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-128px);
+    opacity: 1;
+  }
+}
+
+@keyframes bd3d-swingArrow {
+  50% { transform: translateX(5px) scale(0.9); }
+}
+
+@keyframes bd3d-rotateArrowLine {
+  50% { transform: rotate(30deg); }
+  80% { transform: rotate(55deg); }
+}
+
+@keyframes bd3d-rotateArrowLine2 {
+  50% { transform: rotate(330deg); }
+  80% { transform: rotate(300deg); }
+}
+
+@keyframes bd3d-resetArrow {
+  0% { transform: translateX(-128px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes bd3d-path {
+  from { stroke: white; }
+  to {
+    stroke-dashoffset: -480;
+    stroke: var(--bd3d-path-stroke, #F0EBE3);
+  }
+}
+
+@keyframes bd3d-splash {
+  to {
+    stroke-dasharray: 2 60;
+    stroke-dashoffset: -60;
+  }
+}
+
+@media (max-width: 720px) {
+  .bd-3d-btn {
+    margin: 0;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    align-self: stretch;
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+  }
+}

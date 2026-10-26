@@ -1,0 +1,6 @@
+# Burguar Dreams — burguardreams.com
+
+User-agent: *
+Allow: /
+
+Sitemap: https://burguardreams.com/sitemap.xml
