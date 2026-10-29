@@ -1,0 +1,73 @@
+﻿HOSTINGER â€” MINI ZIPs (Renti + intranet)
+=========================================
+
+Todos los ZIP se extraen en la MISMA carpeta del dominio en Hostinger:
+
+    public_html/
+
+(Es la carpeta donde ya ves `api/`, `intranet/`, `index.html` de la web, y el `.env`.)
+
+En el administrador de archivos de Hostinger:
+  1. Entra en public_html/
+  2. Sube cada .zip
+  3. Extrae / descomprime AQUÃ (no dentro de otra subcarpeta)
+  4. Debe quedar: public_html/api/... y public_html/intranet/...
+
+Orden recomendado (01 â†’ 06):
+-----------------------------
+
+01-api-renti-core.zip
+  Extraer en: public_html/
+  Crea/sobrescribe:
+    api/BurguarAssistant.php
+    api/BurguarAssistantDbContext.php
+
+02-api-renti-intranet-carpeta.zip
+  Extraer en: public_html/
+  Crea/sobrescribe:
+    api/intranet/assistant.php
+    api/intranet/assistant-database.php
+    api/intranet/_assistant_bootstrap.php
+
+03-api-index-php.zip
+  Extraer en: public_html/
+  Sobrescribe:
+    api/index.php
+
+04-api-diagnostico.zip
+  Extraer en: public_html/
+  Sobrescribe:
+    api/renti-ping.php
+    api/intranet-check.php
+
+05-intranet-index-html.zip
+  Extraer en: public_html/
+  Sobrescribe:
+    intranet/index.html
+    intranet/INTRANET_BUILD.txt
+
+06-intranet-js-renti.zip
+  Extraer en: public_html/
+  Crea/sobrescribe:
+    intranet/assets/index-CiDcHyx1.js
+
+NO incluido (no lo sustituyas sin mirar):
+  public_html/.env  â€” dÃ©jalo como estÃ¡ si gemini_in_env ya es true
+
+Comprobar tras subir:
+---------------------
+  https://burguardreams.com/api/renti-ping.php
+    â†’ todos "files": true
+
+  https://burguardreams.com/api/intranet-check.php
+    â†’ assistant_endpoint_php, assistant_php, index_lazy_assistant
+
+  CÃ³digo fuente de https://burguardreams.com/intranet/
+    â†’ script index-CiDcHyx1.js
+
+  Ctrl+Shift+R en la intranet y prueba Renti.
+
+Regenerar ZIPs en tu PC:
+  PowerShell: public_html\scripts\build_hostinger_zips.ps1
+  Salida: public_html\HOSTINGER-ZIPS\
+

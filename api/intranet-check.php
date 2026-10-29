@@ -50,6 +50,16 @@ try {
         $result['checks']['contract_c1_monthly_rent'] = null;
     }
     $result['checks']['gemini_in_env'] = Env::get('GEMINI_API_KEY', '') !== '';
+    $result['checks']['gemini_model'] = Env::get('GEMINI_MODEL', 'gemini-2.0-flash');
+    $result['checks']['assistant_php'] = is_file(__DIR__ . '/BurguarAssistant.php');
+    $result['checks']['assistant_db_context_php'] = is_file(__DIR__ . '/BurguarAssistantDbContext.php');
+    $result['checks']['assistant_endpoint_php'] = is_file(__DIR__ . '/intranet/assistant.php');
+    $indexPath = __DIR__ . '/index.php';
+    $indexBody = is_file($indexPath) ? (string) file_get_contents($indexPath) : '';
+    $result['checks']['index_has_assistant_route'] = str_contains($indexBody, 'intranet/assistant');
+    $result['checks']['index_lazy_assistant'] = str_contains($indexBody, 'burguar_load_assistant_modules');
+    $result['checks']['renti_ping_php'] = is_file(__DIR__ . '/renti-ping.php');
+    $result['checks']['assistant_bootstrap_php'] = is_file(__DIR__ . '/intranet/_assistant_bootstrap.php');
 
     $result['checks']['files'] = [
         'google_config_php' => is_file(__DIR__ . '/google-config.php'),

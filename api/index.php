@@ -18,10 +18,38 @@ require_once __DIR__ . '/UtilityLedger.php';
 require_once __DIR__ . '/UtilityProvisions.php';
 require_once __DIR__ . '/BurguarContracts.php';
 require_once __DIR__ . '/GoogleOAuth.php';
-require_once __DIR__ . '/BurguarAssistant.php';
-
+require_once __DIR__ . '/BurguarCatalog.php';
 
 Env::load();
+
+function burguar_load_assistant_modules(): void
+{
+    static $loaded = false;
+    if ($loaded) {
+        return;
+    }
+    $root = __DIR__;
+    $required = [
+        'BurguarAssistantDbContext.php' => $root . '/BurguarAssistantDbContext.php',
+        'BurguarAssistant.php' => $root . '/BurguarAssistant.php',
+    ];
+    $missing = [];
+    foreach ($required as $label => $path) {
+        if (!is_file($path)) {
+            $missing[] = $label;
+        }
+    }
+    if ($missing !== []) {
+        throw new ApiError(
+            'assistant_files_missing',
+            503,
+            'Faltan en api/: ' . implode(', ', $missing)
+        );
+    }
+    require_once $required['BurguarAssistantDbContext.php'];
+    require_once $required['BurguarAssistant.php'];
+    $loaded = true;
+}
 
 $method = Http::method();
 $path = Http::path();
@@ -51,6 +79,15 @@ try {
         Http::json(200, Auth::login(
             (string) ($body['username'] ?? ''),
             (string) ($body['password'] ?? '')
+        ));
+        exit;
+    }
+
+    if ($method === 'POST' && ($path === '/api/auth/verify-login-otp' || $path === '/api/verify-login-otp')) {
+        $body = Http::readJsonBody();
+        Http::json(200, Auth::verifyLoginOtp(
+            (string) ($body['otpChallengeId'] ?? $body['challengeId'] ?? ''),
+            (string) ($body['code'] ?? '')
         ));
         exit;
     }
@@ -112,7 +149,33 @@ try {
         exit;
     }
 
-    if ($method === 'POST' && $path === '/api/intranet/assistant') {
+    if ($method === 'GET' && ($path === '/api/intranet/catalog' || $path === '/api/catalog.php')) {
+        Auth::requireAdmin();
+        Http::json(200, ['ok' => true, 'catalog' => Catalog::loadAll()]);
+        exit;
+    }
+
+    if ($method === 'POST' && ($path === '/api/intranet/catalog' || $path === '/api/catalog.php')) {
+        Http::json(200, ['ok' => true, 'catalog' => Catalog::save(Http::readJsonBody())]);
+        exit;
+    }
+
+    if (
+        $method === 'GET'
+        && ($path === '/api/intranet/assistant-database'
+            || $path === '/api/intranet/assistant-database.php')
+    ) {
+        burguar_load_assistant_modules();
+        Auth::requireAdmin();
+        Http::json(200, ['ok' => true, 'database' => AssistantDbContext::buildSnapshot()]);
+        exit;
+    }
+
+    if (
+        $method === 'POST'
+        && ($path === '/api/intranet/assistant' || $path === '/api/intranet/assistant.php')
+    ) {
+        burguar_load_assistant_modules();
         Http::json(200, IntranetAssistant::chat(Http::readJsonBody()));
         exit;
     }
@@ -134,7 +197,7 @@ try {
 
     Http::json(404, ['error' => 'not_found', 'message' => 'Not Found']);
 } catch (ApiError $e) {
-    Http::json($e->status, ['error' => $e->code, 'message' => $e->getMessage()]);
+    Http::json($e->status, ['error' => $e->errorCode, 'message' => $e->getMessage()]);
 } catch (Throwable $e) {
     error_log('[api] ' . $e->getMessage());
     Http::json(500, ['error' => 'server_error', 'message' => 'Error interno del servidor']);
