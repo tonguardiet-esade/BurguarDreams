@@ -1,0 +1,13 @@
+INTRANET ACTIVA = app.rentiagent.com
+====================================
+
+En GitHub la copia desplegable está en:  public_html/app-rentiagent/
+
+En Hostinger (rentiagent.com):
+  Subdominio app.rentiagent.com  ->  carpeta tipo public_html/app_rentiagent
+  Sube el CONTENIDO de app-rentiagent/ (no la carpeta padre).
+
+La carpeta public_html/intranet/ en el repo sigue siendo el build antiguo
+ bajo /intranet en burguardreams.com (redirección al login en app).
+
+API: public_html/api/  ->  api.rentiagent.com (carpeta api_rentiagent)
