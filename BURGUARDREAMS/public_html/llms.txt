@@ -1,0 +1,37 @@
+# Burguar Dreams
+
+> Corporate housing y apartamentos amueblados en Barcelona (España) para particulares y empresas.
+
+## Empresa
+
+- Nombre: Burguar Dreams S.L.
+- NIF: B67209502
+- Domicilio: C/ Can Bruixa, 16, ent. 1º, 08028 Barcelona, España
+- Email: burguardreams@gmail.com
+- Teléfono / WhatsApp: +34 660 68 85 01
+- Web: https://burguardreams.com/
+
+## Servicios
+
+- Alquiler de apartamentos amueblados de media duración (desde ~1 mes)
+- Corporate housing para trabajadores en movilidad, expatriados y equipos de empresa
+- Sin permanencia larga; pisos listos para entrar a vivir
+- Visitas personalizadas y gestión con un único interlocutor
+
+## Propiedades (Barcelona)
+
+1. Gran Via de les Corts Catalanes — https://burguardreams.com/apartamento/gran-via/
+2. Eixample c/ València — https://burguardreams.com/apartamento/valencia-eixample/
+3. Les Corts Can Bruixa — https://burguardreams.com/apartamento/can-bruixa/
+4. Comte Urgell / Francesc Macià — https://burguardreams.com/apartamento/urgell-francesc-macia/
+
+## Idiomas del sitio
+
+Español (por defecto), catalán, inglés, francés, alemán, italiano. Parámetro URL: `?lang=es|ca|en|fr|de|it`
+
+## Preguntas frecuentes (resumen)
+
+- Mínimo de alquiler: generalmente desde 1 mes
+- Todos los apartamentos están amueblados y equipados
+- Corporate housing disponible para empresas
+- Fianza habitual: 1–2 mensualidades

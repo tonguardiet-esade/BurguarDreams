@@ -1,0 +1,78 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Anclas de marca (no se invierten) */
+  --brand-ink: #1C1C1C;
+  --brand-taupe: #9E8D73;
+  --brand-beige: #C8B79C;
+
+  /* Modo día — semánticos */
+  --bg: #FFFFFF;
+  --bg-secondary: #F5F5F3;
+  --surface: #FFFFFF;
+  --bg-elevated: #FFFFFF;
+  --input-bg: #F5F5F3;
+
+  --text: #1C1C1C;
+  --text-secondary: #3A3A3A;
+  --text-muted: #6B6B6B;
+
+  --accent: #9E8D73;
+  --accent-light: #C8B79C;
+  --border: #E5E5E2;
+
+  /* Botones */
+  --btn-primary: #1C1C1C;
+  --btn-on-primary: #FFFFFF;
+  --btn-accent: #9E8D73;
+  --btn-on-accent: #FFFFFF;
+  --btn-glow-fg: #1C1C1C;
+  --btn-radius: 2rem;
+
+  /* Brillo hover de botones */
+  --glow-brown-soft: #F0EBE3;
+  --glow-brown: #C8B79C;
+  --glow-brown-deep: #9E8D73;
+
+  /* Alias legacy → día (componentes antiguos) */
+  --cream: #F5F5F3;
+  --sand: #E5E5E2;
+  --stone: #C4B8A4;
+  --warm-dark: #1C1C1C;
+  --warm-mid: #3A3A3A;
+  --white: #FFFFFF;
+
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'DM Sans', sans-serif;
+  --header-offset: 120px;
+  --page-gutter: 4rem;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --header-offset: 96px;
+    --page-gutter: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --header-offset: 84px;
+    --page-gutter: 1rem;
+  }
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.modal {
+  background: var(--bg-elevated, #ffffff);
+  max-width: 520px;
+  width: 100%;
+  padding: 3.5rem;
+  position: relative;
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

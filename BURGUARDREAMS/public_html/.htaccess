@@ -1,0 +1,84 @@
+
+AddType video/mp4 .mp4
+DirectoryIndex index.php index.html
+Options -MultiViews -Indexes
+
+# --- Seguridad ---
+<FilesMatch "(?i)^(\.env|\.env\..*)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+<FilesMatch "(?i)\.(py|pyc|pyo|gs|sqlite|db|sql)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Pasar Authorization a PHP
+  RewriteCond %{HTTP:Authorization} .
+  RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+  # Bloquear carpetas internas
+  RewriteRule ^(data|scripts)(/|$) - [F,L]
+  RewriteRule ^serve_8010\.py$ - [F,L]
+
+  # ========== RENTIAGENT ==========
+
+  # No volver a procesar las carpetas internas
+  RewriteRule ^(?:app_rentiagent|api_rentiagent)(?:/|$) - [L]
+
+  # app.rentiagent.com usa la intranet
+  RewriteCond %{HTTP_HOST} ^app\.rentiagent\.com$ [NC]
+  RewriteRule ^(.*)$ app_rentiagent/$1 [L]
+
+  # api.rentiagent.com usa la API
+  RewriteCond %{HTTP_HOST} ^api\.rentiagent\.com$ [NC]
+  RewriteRule ^(.*)$ api_rentiagent/$1 [L]
+
+  # ========== INTRANET ANTIGUA ==========
+  RewriteCond %{HTTP_HOST} !^app\.rentiagent\.com$ [NC]
+  RewriteCond %{HTTP_HOST} !^api\.rentiagent\.com$ [NC]
+  RewriteCond %{REQUEST_URI} ^/intranet/
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+
+  RewriteCond %{HTTP_HOST} !^app\.rentiagent\.com$ [NC]
+  RewriteCond %{HTTP_HOST} !^api\.rentiagent\.com$ [NC]
+  RewriteCond %{REQUEST_URI} ^/intranet
+  RewriteRule ^ /intranet/index.html [L]
+
+  # ========== API ANTIGUA ==========
+  RewriteCond %{HTTP_HOST} !^app\.rentiagent\.com$ [NC]
+  RewriteCond %{HTTP_HOST} !^api\.rentiagent\.com$ [NC]
+  RewriteCond %{REQUEST_URI} ^/api/
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+
+  RewriteCond %{HTTP_HOST} !^app\.rentiagent\.com$ [NC]
+  RewriteCond %{HTTP_HOST} !^api\.rentiagent\.com$ [NC]
+  RewriteRule ^api(?:/.*)?$ /api/index.php [QSA,L]
+
+  # ========== WEB PUBLICA ==========
+  RewriteCond %{HTTP_HOST} !^app\.rentiagent\.com$ [NC]
+  RewriteCond %{HTTP_HOST} !^api\.rentiagent\.com$ [NC]
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  RewriteCond %{HTTP_HOST} !^app\.rentiagent\.com$ [NC]
+  RewriteCond %{HTTP_HOST} !^api\.rentiagent\.com$ [NC]
+  RewriteRule ^ /index.html [L]
+</IfModule>

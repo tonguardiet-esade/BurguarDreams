@@ -1,0 +1,37 @@
+SUBIR ESTA CARPETA COMPLETA A HOSTINGER
+======================================
+Origen en tu PC:
+  C:\Users\moham\Downloads\burguardreams.com\public_html
+
+Destino en Hostinger:
+  public_html  (raiz del dominio burguardreams.com)
+
+COMO SUBIR (recomendado)
+------------------------
+1. Comprime public_html en un ZIP (clic derecho > Comprimir).
+2. hPanel > Archivos > public_html > Subir ZIP > Extraer aqui.
+3. Si pregunta por reemplazar archivos: SI (excepto .env si ya lo tenias en el servidor).
+
+NO HACE FALTA subir carpetas vacias por separado. Ya incluye:
+  - api/          (login PHP)
+  - data/burguar.db
+  - .htaccess     (raiz)
+  - intranet/     (app actualizada)
+  - resto web publica
+
+ARCHIVO .env
+------------
+Si en Hostinger ya tienes .env con claves Google/correo, NO lo borres al subir.
+Copia el .env del servidor antes del ZIP o sube el ZIP sin sobrescribir .env.
+
+DESPUES DE SUBIR (3 pruebas)
+-----------------------------
+A) https://burguardreams.com/api/ping.php
+   Bien = texto JSON con "ok":true
+   Mal  = pagina 503 -> PHP del hosting (soporte Hostinger o cambiar PHP 8.2 y guardar)
+
+B) https://burguardreams.com/intranet/
+
+C) https://burguardreams.com/
+
+Si A falla con 503, B puede abrir pero el login NO funcionara hasta que A vaya bien.

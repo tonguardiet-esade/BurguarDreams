@@ -1,0 +1,66 @@
+/* Circular Gallery — galería OGL curva en ficha de apartamento */
+
+.circular-gallery,
+#d-photos.circular-gallery-host {
+  position: relative;
+  width: 100%;
+  height: min(78vh, 640px);
+  min-height: 22rem;
+  margin: 0 0 5rem;
+  overflow: hidden;
+  color: #ffffff;
+  background: transparent;
+  filter: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+[data-theme="dark"] .circular-gallery,
+[data-theme="dark"] #d-photos.circular-gallery-host {
+  color: #ffffff;
+}
+
+.circular-gallery-stage {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  overflow: hidden;
+}
+
+.circular-gallery-stage:active {
+  cursor: grabbing;
+}
+
+.circular-gallery-stage canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent;
+  filter: none;
+}
+
+.circular-gallery-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 1rem;
+  color: var(--text-muted, #6b6b6b);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+}
+
+#d-photos.circular-gallery-host .detail-photo {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .circular-gallery,
+  #d-photos.circular-gallery-host {
+    height: min(60vh, 480px);
+    min-height: 18rem;
+  }
+}

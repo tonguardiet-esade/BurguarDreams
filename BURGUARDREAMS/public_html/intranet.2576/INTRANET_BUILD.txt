@@ -1,0 +1,3 @@
+build=20261026-rent-fix-d
+js=assets/index-DIa8vM1L.js
+css=assets/index-CGUEi1sO.css

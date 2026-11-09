@@ -1,0 +1,53 @@
+Burguar Dreams — subida a Hostinger (Supabase + PHP)
+====================================================
+
+Carpeta local lista:
+  C:\Users\moham\Downloads\burguardreams.com\public_html
+
+1) ARCHIVO .env EN EL SERVIDOR (obligatorio)
+   - En tu PC está:  .env.for-hostinger
+   - En Hostinger súbelo como:  public_html/.env
+     (misma carpeta que api/ e intranet/, NO dentro de api/)
+   - Ya trae INTRANET_LOGIN_URL de producción y DATABASE_URL de Supabase.
+
+2) QUÉ SUBIR (FTP / Administrador de archivos)
+   - api/          (todo, incluye Db.php y supabase en ../supabase/)
+   - supabase/     (migración SQL; PHP la usa si hace falta)
+   - intranet/     (build actual: ver intranet/INTRANET_BUILD.txt)
+   - js/, css/, assets/ del sitio web si los tocaste
+   - NO es obligatorio subir data/burguar.db (los datos viven en Supabase)
+   - NO subas __pycache__/ ni carpetas .git
+
+3) ZIP (recomendado — usar el LINUX, no el de PowerShell)
+   - C:\Users\moham\Downloads\burguardreams-public_html-hostinger-LINUX.zip
+   - Rutas con barras normales: api/intranet-check.php (carpetas reales al extraer)
+   - El ZIP viejo burguardreams-public_html-hostinger.zip rompe carpetas en Hostinger
+     (verás nombres tipo assets\images\... — ESO ESTÁ MAL)
+   - En Hostinger: subir ZIP → Extraer en public_html
+
+4) PROBAR
+   https://burguardreams.com/api/intranet-check.php
+
+   Debe mostrar:
+     "database": "postgresql (Supabase)"
+     "pdo_pgsql": true
+     "ok": true
+
+   Si pdo_pgsql es false → Hostinger no tiene PostgreSQL en PHP; avisa al soporte.
+
+5) INTRANET
+   https://burguardreams.com/intranet/login
+   Ctrl+F5 si ves versión antigua.
+
+   Comprobar que la subida es la buena (sin esto, el arreglo de renta NO está activo):
+   - Abre https://burguardreams.com/intranet/index.html (clic derecho → ver código fuente)
+     Debe cargar:  /intranet/assets/index-ODsFoPp6.js
+     Si sigue index-RVzTO0ON.js → no has subido el index.html nuevo.
+   - Abre https://burguardreams.com/intranet/INTRANET_BUILD.txt
+     Debe decir build=20261025-rent-fix
+   - Sube SIEMPRE carpeta intranet entera: index.html + assets/ + INTRANET_BUILD.txt
+     Destino en Hostinger: public_html/intranet/  (no public_html/ suelta ni otra carpeta)
+
+6) LOCAL (tu PC)
+   Sigue usando .env con INTRANET_LOGIN_URL=http://127.0.0.1:8010/...
+   No reemplaces tu .env local por el de Hostinger.

@@ -1,0 +1,13 @@
+Options -MultiViews -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Servir archivos y carpetas que existen
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Rutas de la intranet: /login, /dashboard, etc.
+    RewriteRule ^ index.html [L]
+</IfModule>

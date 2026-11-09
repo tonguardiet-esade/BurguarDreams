@@ -1,0 +1,215 @@
+/* Works Wheel — galería 3D en ficha de apartamento */
+
+.works-wheel {
+  --ww-fg: var(--text, #1c1c1c);
+  --ww-muted: var(--text-muted, #6b6b6b);
+  --ww-bg: var(--bg, #fff);
+  position: relative;
+  width: 100%;
+  height: min(78vh, 720px);
+  min-height: 26rem;
+  margin: 0 0 5rem;
+  overflow: hidden;
+  background: var(--ww-bg);
+  color: var(--ww-fg);
+  user-select: none;
+  border-radius: 0;
+}
+
+[data-theme="dark"] .works-wheel {
+  --ww-fg: #ffffff;
+  --ww-muted: #c8b79c;
+  --ww-bg: #141414;
+}
+
+.works-wheel-stage {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  touch-action: pan-x;
+  outline: none;
+  perspective-origin: 50% 50%;
+}
+
+.works-wheel-stage:active {
+  cursor: grabbing;
+}
+
+.works-wheel-stage:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -4px;
+}
+
+.works-wheel-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.works-wheel-card {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.works-wheel-face {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: var(--sand, #e5e5e2);
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.45);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.works-wheel-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.works-wheel-action {
+  pointer-events: none;
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  background: color-mix(in srgb, var(--ww-bg) 82%, transparent);
+  color: var(--ww-fg);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.works-wheel-action svg {
+  width: 0.65rem;
+  height: 0.65rem;
+}
+
+.works-wheel-card:hover .works-wheel-action,
+.works-wheel-card:focus-visible .works-wheel-action {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.works-wheel-ring-label,
+.works-wheel-front-title {
+  pointer-events: none;
+  position: absolute;
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--ww-fg);
+}
+
+.works-wheel-ring-label {
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+.works-wheel-front-title {
+  top: 50%;
+  left: 6%;
+  transform: translateY(-50%);
+  opacity: 0;
+  max-width: 28%;
+  line-height: 1.05;
+}
+
+.works-wheel-index {
+  position: absolute;
+  top: 7.5%;
+  right: 2%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: right;
+  line-height: 1.75;
+  color: var(--ww-muted);
+  max-height: 85%;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.works-wheel-index button {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-align: right;
+  transition: color 0.2s ease;
+}
+
+.works-wheel-index button:hover,
+.works-wheel-index button.is-active {
+  color: var(--ww-fg);
+  font-weight: 500;
+}
+
+#d-photos.works-wheel-host {
+  display: block;
+  margin-bottom: 5rem;
+}
+
+#d-photos.works-wheel-host .detail-photo {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .works-wheel {
+    height: min(70vh, 600px);
+    min-height: 22rem;
+  }
+
+  .works-wheel-front-title {
+    left: 4%;
+    max-width: 36%;
+  }
+
+  .works-wheel-index {
+    right: 1%;
+    top: 5%;
+    max-width: 28%;
+  }
+}
+
+@media (max-width: 600px) {
+  .works-wheel-index {
+    display: none;
+  }
+
+  .works-wheel-front-title {
+    left: 50%;
+    top: auto;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    max-width: 90%;
+    text-align: center;
+    font-size: 1.1rem !important;
+  }
+}

@@ -1,0 +1,4 @@
+EXTRAE ESTE ZIP DIRECTAMENTE DENTRO DE api.rentiagent.com/public_html/
+No entres en otra carpeta ni muevas archivos.
+Creará automáticamente _storage_import/fichas y _storage_import/property-photos.
+Después abre https://api.rentiagent.com/storage-import.php

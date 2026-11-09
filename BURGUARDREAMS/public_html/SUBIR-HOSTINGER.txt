@@ -1,0 +1,34 @@
+COMO SUBIR (File Manager Hostinger) — LEE ESTO
+==============================================
+
+Problema: en el servidor NO estan los PHP de la API. Por eso
+https://burguardreams.com/api/ping.php muestra la web sin CSS.
+
+Opcion A — ZIP (recomendado)
+1) En tu PC abre:
+   C:\Users\moham\Downloads\burguardreams.com\SUBIR-HOSTINGER-API.zip
+2) Hostinger → File Manager → entra en public_html
+3) Sube SUBIR-HOSTINGER-API.zip
+4) Clic derecho → Extract
+5) Si pide sobrescribir → YES / Replace
+6) Borra el zip del servidor despues
+
+Opcion B — carpetas a mano
+Sube/sobrescribe en public_html:
+  - .htaccess
+  - TEST-API.php
+  - .env
+  - carpeta api/   (debe tener ping.php, auth/login.php, index.php…)
+  - carpeta data/  (burguar.db)
+  - carpeta intranet/
+
+COMPROBAR (en este orden):
+1) https://burguardreams.com/TEST-API.php
+   → JSON con "PHP funciona"
+2) https://burguardreams.com/api/ping.php
+   → {"ok":true,"ping":"php"...}
+3) https://burguardreams.com/intranet/
+   Login: Burguardreams / BCNBurguar123++
+
+Si TEST-API.php sigue mostrando la web, estas extrayendo el zip
+FUERA de public_html o en una carpeta equivocada.

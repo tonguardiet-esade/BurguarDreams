@@ -1,0 +1,68 @@
+Subida Hostinger — Google login (proceso completo)
+==================================================
+Actualizado: 2026-10-20 (fix HTTP 500 en auth/google y google-login.php)
+
+A) QUÉ SUBIR
+------------
+Opción recomendada: sube TODO el contenido de esta carpeta public_html al public_html
+del hosting (File Manager o FTP), sobrescribiendo archivos viejos.
+
+Mínimo imprescindible si solo quieres arreglar Google (esta corrección):
+  api/Http.php
+  api/google-login.php
+  api/index.php
+  api/contracts.php
+  api/utilities/ledger.php
+  api/utilities/provisions.php
+  intranet/index.html
+  intranet/assets/index-B0Jde81R.js
+  (mantén intranet/assets/index-oF2VcrzI.css)
+
+NO borres en el servidor:
+  .env de producción (solo asegúrate de que tenga GOOGLE_OAUTH_CLIENT_ID=...apps.googleusercontent.com)
+  data/burguar.db
+
+B) .env EN EL SERVIDOR
+----------------------
+En la raíz de public_html del hosting, el .env debe incluir:
+  GOOGLE_OAUTH_CLIENT_ID=tu-client-id.apps.googleusercontent.com
+
+En Google Cloud Console → OAuth → Orígenes autorizados:
+  https://burguardreams.com
+  https://www.burguardreams.com
+  http://localhost:5173
+
+C) COMPROBAR DESDE TU PC (POWERSHELL) — UN SOLO COMANDO
+-------------------------------------------------------
+1. Abre PowerShell.
+2. Ve a la carpeta public_html que acabas de subir (la de tu PC, el script es el mismo):
+
+   cd "C:\Users\moham\Downloads\burguardreams.com\public_html"
+
+3. Ejecuta el script incluido (permite scripts solo esta vez):
+
+   powershell -ExecutionPolicy Bypass -File ".\PROBAR-GOOGLE-DESPUES-SUBIR.ps1"
+
+Qué debe salir:
+  - GET intranet-check.php → 200, google_oauth_in_env true, email burguardreams@gmail.com
+  - GET google-login.php → 200, "endpoint":"google-login"
+  - POST google-login.php con token falso → 401 y "error":"invalid_google_token"
+  - POST auth/google con token falso → 401 y "error":"invalid_google_token"
+
+Si ves 500 o cuerpo vacío en el POST, no has subido bien api/Http.php o api/google-login.php.
+
+D) PROBAR EN EL NAVEGADOR
+-------------------------
+1. https://burguardreams.com/intranet/login
+2. Ctrl+F5 (recarga forzada)
+3. «Continue with Google» con la cuenta burguardreams@gmail.com
+
+Login clásico (por si acaso): usuario Burguardreams, contraseña la de producción.
+
+E) ARCHIVOS CLAVE (referencia)
+------------------------------
+  api/Http.php              — ApiError usa errorCode (PHP 8+)
+  api/google-login.php      — POST credential → sesión
+  api/auth/google.php       — delega en google-login.php
+  api/auth/google-config.php
+  intranet/assets/index-B0Jde81R.js

@@ -1,0 +1,20 @@
+CONTENIDO PARA app.rentiagent.com (Hostinger)
+============================================
+
+1. En hPanel: mira el DOCUMENT ROOT del subdominio app.rentiagent.com
+   (ej. public_html de ese subdominio, o public_html/app_rentiagent).
+
+2. Descomprime TODO este ZIP ahí (raíz del document root del subdominio APP).
+   Debe quedar index.html y la carpeta assets/ en la MISMA carpeta
+   que el servidor usa como raíz del sitio app.
+
+3. Comprueba index.html: <div id="root"> y referencias assets/index-....js
+
+4. Ctrl+F5 en https://app.rentiagent.com/
+
+NO subas este contenido a la raíz de burguardreams.com salvo que ese sea
+el document root que uses (normalmente no).
+
+Build empaquetado (referencia):
+  JS:  /assets/index-DB0xfi8K.js
+  CSS: /assets/index-k99hidmX.css

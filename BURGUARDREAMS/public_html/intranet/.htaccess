@@ -1,0 +1,7 @@
+# La intranet activa vive exclusivamente en app.rentiagent.com.
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(.*)$ https://app.rentiagent.com/$1 [R=301,L,NE]
+</IfModule>

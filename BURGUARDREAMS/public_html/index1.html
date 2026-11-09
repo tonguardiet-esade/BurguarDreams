@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* Tema antes del primer paint (localStorage → prefers-color-scheme). */
+(function () {
+  try {
+    var k = 'burguar-theme';
+    var s = localStorage.getItem(k);
+    var t = (s === 'light' || s === 'dark')
+      ? s
+      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+<script>
+/* Raíz del sitio: GitHub Pages usa /NombreRepo/; local con http.server desde el padre usa /public_html/;
+   dominio propio usa /. <base> obligatorio: pushPropertyUrl deja la URL en /apartamento/{slug}/ y sin base
+   las rutas ./assets/... se resuelven contra ese path y devuelven 404. */
+(function () {
+  var origin = location.origin;
+  var parts = location.pathname.split('/').filter(Boolean);
+  var sitePath = '/';
+
+  /* file://: no inyectar <base> en / (rompe CSS/JS); rutas relativas usan la carpeta del HTML */
+  if (location.protocol === 'file:') {
+    window.SITE_BASE_URL = location.href.replace(/[^/]*$/, '');
+    return;
+  }
+
+  /* Subcarpeta: GitHub Pages (/Repo/) o http.server desde el padre (/public_html/).
+     No tratar ficheros (.php, .html…) ni rutas de app (api/intranet) como “carpeta base”
+     — si no, /fix-admin.php rompe el CSS al reescribir a index.html. */
+  var reserved = {
+    'index.html': 1,
+    apartamento: 1,
+    api: 1,
+    intranet: 1,
+    assets: 1,
+    css: 1,
+    js: 1,
+    data: 1
+  };
+  if (
+    parts.length &&
+    !reserved[parts[0]] &&
+    parts[0].indexOf('.') === -1
+  ) {
+    sitePath = '/' + parts[0] + '/';
+  }
+
+  var base = document.createElement('base');
+  base.href = origin + sitePath;
+  document.head.appendChild(base);
+  window.SITE_BASE_URL = origin + sitePath;
+  var ogImage = window.SITE_BASE_URL + 'assets/images/properties/granvia/Cuina.jpg';
+  [['og:url', location.href.split('#')[0]], ['og:image', ogImage], ['twitter:image', ogImage]].forEach(function (pair) {
+    var el = document.querySelector('meta[property="' + pair[0] + '"], meta[name="' + pair[0] + '"]');
+    if (el) el.setAttribute('content', pair[1]);
+  });
+})();
+</script>
+<title>Corporate housing Barcelona para empresas | Burguar Dreams</title>
+<meta name="description" content="Apartamentos amueblados en Eixample para trabajadores y equipos. Sin permanencia, gestión centralizada. Consulta disponibilidad.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Burguar Dreams">
+<meta property="og:title" content="Corporate housing Barcelona para empresas | Burguar Dreams">
+<meta property="og:description" content="Apartamentos amueblados en Eixample para trabajadores y equipos. Sin permanencia, gestión centralizada. Consulta disponibilidad.">
+<meta property="og:url" content="">
+<meta property="og:image" content="">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Corporate housing Barcelona para empresas | Burguar Dreams">
+<meta name="twitter:description" content="Apartamentos amueblados en Eixample para trabajadores y equipos. Consulta disponibilidad.">
+<meta name="twitter:image" content="">
+<link rel="canonical" id="canonical-link" href="">
+<script type="application/ld+json" id="schema-org-static">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "#organization",
+      "name": "Burguar Dreams S.L.",
+      "legalName": "Burguar Dreams S.L.",
+      "taxID": "B67209502",
+      "url": "https://kaoutaracceleralia.github.io/BurguarDreams/",
+      "email": "burguardreams@gmail.com",
+      "telephone": "+34660688501",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "C/ Can Bruixa, 16, 1ª planta 1º",
+        "addressLocality": "Barcelona",
+        "postalCode": "08028",
+        "addressCountry": "ES"
+      },
+      "areaServed": { "@type": "City", "name": "Barcelona" },
+      "description": "Corporate housing y apartamentos amueblados en Barcelona para particulares y empresas."
+    },
+    {
+      "@type": "LocalBusiness",
+      "name": "Burguar Dreams",
+      "image": "https://kaoutaracceleralia.github.io/BurguarDreams/assets/images/properties/granvia/Cuina.jpg",
+      "telephone": "+34660688501",
+      "priceRange": "€€",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "C/ Can Bruixa, 16, 1ª planta 1º",
+        "addressLocality": "Barcelona",
+        "postalCode": "08028",
+        "addressCountry": "ES"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type":"Question","name":"¿Cuánto tiempo mínimo puedo alquilar?","acceptedAnswer":{"@type":"Answer","text":"Nuestros apartamentos están disponibles para alquileres de media y larga duración, generalmente a partir de 1 mes."}},
+        {"@type":"Question","name":"¿Los apartamentos están amueblados?","acceptedAnswer":{"@type":"Answer","text":"Sí, todos nuestros apartamentos están completamente amueblados y equipados."}},
+        {"@type":"Question","name":"¿Ofrecéis alojamiento para empresas?","acceptedAnswer":{"@type":"Answer","text":"Sí. Disponemos de soluciones específicas de corporate housing para empresas en Barcelona."}}
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "name": "Apartamentos corporate housing Barcelona",
+      "itemListElement": [
+        {"@type":"ListItem","position":1,"url":"https://kaoutaracceleralia.github.io/BurguarDreams/apartamento/gran-via/","name":"Gran Via de les Corts Catalanes"},
+        {"@type":"ListItem","position":2,"url":"https://kaoutaracceleralia.github.io/BurguarDreams/apartamento/valencia-eixample/","name":"Eixample c/ València"},
+        {"@type":"ListItem","position":3,"url":"https://kaoutaracceleralia.github.io/BurguarDreams/apartamento/can-bruixa/","name":"Les Corts Can Bruixa"},
+        {"@type":"ListItem","position":4,"url":"https://kaoutaracceleralia.github.io/BurguarDreams/apartamento/urgell-francesc-macia/","name":"Comte Urgell — Francesc Macià"}
+      ]
+    }
+  ]
+}
+</script>
+<link rel="icon" href="assets/favicon-32.png?v=20261012a" type="image/png" sizes="32x32">
+<link rel="icon" href="assets/favicon.png?v=20261012a" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20261012a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,100..1000&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/variables.css?v=20261004a">
+<link rel="stylesheet" href="css/theme.css?v=20261004a">
+<link rel="stylesheet" href="css/layout.css?v=20261004a">
+<link rel="stylesheet" href="css/components.css?v=20261004a">
+<link rel="stylesheet" href="css/pages.css?v=20261004a">
+<link rel="stylesheet" href="css/responsive.css?v=20261004a">
+<link rel="stylesheet" href="css/scroll-reveal.css?v=20261004a">
+<link rel="stylesheet" href="css/apartment-deck.css?v=20261004a">
+<link rel="stylesheet" href="css/circular-gallery.css?v=20261004a">
+<link rel="stylesheet" href="css/coverflow-gallery.css?v=20261004a">
+<link rel="stylesheet" href="css/video-player.css?v=20261004a">
+<link rel="stylesheet" href="css/variable-font-hover.css?v=20261004a">
+<link rel="stylesheet" href="css/3d-button.css?v=20261004a">
+<link rel="stylesheet" href="css/wave-background.css?v=20261004a">
+<link rel="stylesheet" href="css/page-transition.css?v=20261004a">
+<link rel="stylesheet" href="css/text-scroll-animation.css?v=20261004a">
+<link rel="stylesheet" href="css/reduced-motion.css?v=20261004a">
+<link rel="stylesheet" href="css/scroll-progress.css?v=20261004a">
+</head>
+<body>
+
+<div class="bd-page" id="bd-page">
+
+<a href="#hogar" class="skip-link" id="skip-link">Saltar al contenido</a>
+
+<!-- Scroll progress — línea corta fija a la derecha (estilo MarkestrAI) -->
+<div id="scroll-progress" aria-hidden="true">
+  <div id="scroll-progress-label">0%</div>
+  <div id="progressBarContainer">
+    <div id="progressBar"></div>
+  </div>
+</div>
+
+<!-- ─────────────── HEADER ─────────────── -->
+<header id="main-header">
+  <div class="header-top">
+    <a href="#" class="logo" onclick="return showHome()">Burguar <span>Dreams</span></a>
+
+    <div class="header-top-actions">
+      <a href="https://wa.me/34660688501"
+         target="_blank" rel="noopener" class="wa-header-btn" id="wa-header-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+        </svg>
+        <span class="wa-header-text" id="wa-header-text">Consultar</span>
+      </a>
+
+      <a
+        class="bd-intranet-btn"
+        href="/intranet/"
+        target="_self"
+        rel="noopener"
+        aria-label="Intranet"
+        id="bd-intranet-btn"
+      >
+        <span class="bd-intranet-btn__icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="14" rx="2" />
+            <path d="M8 20h8" />
+            <path d="M12 18v2" />
+          </svg>
+        </span>
+        <span class="bd-intranet-btn__label">Intranet</span>
+      </a>
+
+      <button
+        type="button"
+        class="theme-toggle"
+        data-theme-toggle
+        role="switch"
+        aria-checked="false"
+        aria-label="Activar modo oscuro"
+        title="Activar modo oscuro"
+      >
+        <svg class="theme-toggle__defs" aria-hidden="true" width="0" height="0">
+          <defs>
+            <filter id="theme-grain-light">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"></feTurbulence>
+              <feColorMatrix in="noise" type="saturate" values="0" result="desaturatedNoise"></feColorMatrix>
+              <feComponentTransfer in="desaturatedNoise" result="lightGrain">
+                <feFuncA type="linear" slope="0.3"></feFuncA>
+              </feComponentTransfer>
+              <feBlend in="SourceGraphic" in2="lightGrain" mode="overlay"></feBlend>
+            </filter>
+            <filter id="theme-grain-dark">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"></feTurbulence>
+              <feColorMatrix in="noise" type="saturate" values="0" result="desaturatedNoise"></feColorMatrix>
+              <feComponentTransfer in="desaturatedNoise" result="darkGrain">
+                <feFuncA type="linear" slope="0.5"></feFuncA>
+              </feComponentTransfer>
+              <feBlend in="SourceGraphic" in2="darkGrain" mode="overlay"></feBlend>
+            </filter>
+          </defs>
+        </svg>
+        <span class="theme-toggle__groove" aria-hidden="true"></span>
+        <span class="theme-toggle__gloss" aria-hidden="true"></span>
+        <span class="theme-toggle__ao" aria-hidden="true"></span>
+        <span class="theme-toggle__track-icons" aria-hidden="true">
+          <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+          </svg>
+          <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </span>
+        <span class="theme-toggle__thumb">
+          <span class="theme-toggle__thumb-shine" aria-hidden="true"></span>
+          <span class="theme-toggle__particles" aria-hidden="true"></span>
+          <span class="theme-toggle__thumb-icon">
+            <svg class="theme-toggle__thumb-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4" fill="currentColor"></circle>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+            </svg>
+            <svg class="theme-toggle__thumb-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+          </span>
+        </span>
+      </button>
+
+      <div class="lang-switcher" id="lang-switcher">
+        <button class="lang-btn" onclick="toggleLang(event)" id="lang-btn">
+          <span class="lang-flag" id="lang-flag">🇪🇸</span>
+          <span id="lang-label">ES</span>
+          <svg class="lang-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M2 4l4 4 4-4"/>
+          </svg>
+        </button>
+        <div class="lang-dropdown" id="lang-dropdown">
+          <button type="button" class="lang-option active" onclick="setLang('es')">
+            <span class="lang-option-flag" aria-hidden="true">🇪🇸</span>
+            <span class="lang-option-label">Español</span>
+          </button>
+          <button type="button" class="lang-option" onclick="setLang('ca')">
+            <span class="lang-option-flag" aria-hidden="true"><svg width="18" height="12" viewBox="0 0 18 12" style="flex-shrink:0;border:1px solid #ddd"><rect width="18" height="12" fill="#FCDD09"/><rect y="0" width="18" height="1.7" fill="#C60B1E"/><rect y="3.4" width="18" height="1.7" fill="#C60B1E"/><rect y="6.8" width="18" height="1.7" fill="#C60B1E"/><rect y="10.2" width="18" height="1.7" fill="#C60B1E"/></svg></span>
+            <span class="lang-option-label">Català</span>
+          </button>
+          <button type="button" class="lang-option" onclick="setLang('en')">
+            <span class="lang-option-flag" aria-hidden="true">🇬🇧</span>
+            <span class="lang-option-label">English</span>
+          </button>
+          <button type="button" class="lang-option" onclick="setLang('fr')">
+            <span class="lang-option-flag" aria-hidden="true">🇫🇷</span>
+            <span class="lang-option-label">Français</span>
+          </button>
+          <button type="button" class="lang-option" onclick="setLang('de')">
+            <span class="lang-option-flag" aria-hidden="true">🇩🇪</span>
+            <span class="lang-option-label">Deutsch</span>
+          </button>
+          <button type="button" class="lang-option" onclick="setLang('it')">
+            <span class="lang-option-flag" aria-hidden="true">🇮🇹</span>
+            <span class="lang-option-label">Italiano</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="header-nav" aria-label="Abrir menú de navegación">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="header-nav" id="header-nav">
+    <button class="nav-link active-nav" onclick="scrollToSection('hogar')" id="nav-hogar-btn">Ver apartamentos</button>
+    <button class="nav-link" onclick="scrollToSection('empresas')" id="nav-empresas-btn">Alojamiento para Empresas</button>
+    <button class="nav-link" onclick="scrollToSection('faq')" id="nav-faq-btn">FAQs</button>
+    <button class="nav-link" onclick="scrollToSection('contacto')" id="nav-contact-btn">Contacto</button>
+  </nav>
+</header>
+
+<!-- ─────────────── HOME VIEW ─────────────── -->
+<div id="home-view">
+
+  <section class="hero page-section" id="inicio">
+    <div class="hero-bg" id="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow" id="hero-eyebrow-text" data-reveal="left">Corporate housing en Barcelona · Para empresas y equipos</p>
+      <h1 id="hero-h1-text" data-reveal="right">Aloja a tu equipo en Barcelona <em>sin contratos largos ni gestión compleja</em></h1>
+      <p class="hero-sub" id="hero-sub-text" data-reveal="left">Apartamentos amueblados en el Eixample, listos para entrar a vivir. Contratos mensuales, un solo interlocutor y respuesta en menos de 24 h.</p>
+      <div class="hero-ctas" data-reveal="right">
+        <a href="https://wa.me/34660688501"
+           target="_blank" rel="noopener" class="hero-cta hero-cta-whatsapp" id="hero-cta-whatsapp">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          <span id="hero-cta-whatsapp-text">Consultar disponibilidad para mi empresa</span>
+        </a>
+        <button type="button" class="hero-cta bd-3d-btn" id="hero-cta-form" onclick="openModal()" aria-label="Solicitar propuesta">
+          <span class="bd-3d-btn__sizer" aria-hidden="true">Solicitar</span>
+          <div class="bd-3d-btn__bg" aria-hidden="true"></div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 342 208" height="208" width="342" class="bd-3d-btn__splash" aria-hidden="true">
+            <path stroke-linecap="round" stroke-width="3" d="M54.1054 99.7837C54.1054 99.7837 40.0984 90.7874 26.6893 97.6362C13.2802 104.485 1.5 97.6362 1.5 97.6362" />
+            <path stroke-linecap="round" stroke-width="3" d="M285.273 99.7841C285.273 99.7841 299.28 90.7879 312.689 97.6367C326.098 104.486 340.105 95.4893 340.105 95.4893" />
+            <path stroke-linecap="round" stroke-width="3" stroke-opacity="0.3" d="M281.133 64.9917C281.133 64.9917 287.96 49.8089 302.934 48.2295C317.908 46.6501 319.712 36.5272 319.712 36.5272" />
+            <path stroke-linecap="round" stroke-width="3" stroke-opacity="0.3" d="M281.133 138.984C281.133 138.984 287.96 154.167 302.934 155.746C317.908 157.326 319.712 167.449 319.712 167.449" />
+            <path stroke-linecap="round" stroke-width="3" d="M230.578 57.4476C230.578 57.4476 225.785 41.5051 236.061 30.4998C246.337 19.4945 244.686 12.9998 244.686 12.9998" />
+            <path stroke-linecap="round" stroke-width="3" d="M230.578 150.528C230.578 150.528 225.785 166.471 236.061 177.476C246.337 188.481 244.686 194.976 244.686 194.976" />
+            <path stroke-linecap="round" stroke-width="3" stroke-opacity="0.3" d="M170.392 57.0278C170.392 57.0278 173.89 42.1322 169.571 29.54C165.252 16.9478 168.751 2.05227 168.751 2.05227" />
+            <path stroke-linecap="round" stroke-width="3" stroke-opacity="0.3" d="M170.392 150.948C170.392 150.948 173.89 165.844 169.571 178.436C165.252 191.028 168.751 205.924 168.751 205.924" />
+            <path stroke-linecap="round" stroke-width="3" d="M112.609 57.4476C112.609 57.4476 117.401 41.5051 107.125 30.4998C96.8492 19.4945 98.5 12.9998 98.5 12.9998" />
+            <path stroke-linecap="round" stroke-width="3" d="M112.609 150.528C112.609 150.528 117.401 166.471 107.125 177.476C96.8492 188.481 98.5 194.976 98.5 194.976" />
+            <path stroke-linecap="round" stroke-width="3" stroke-opacity="0.3" d="M62.2941 64.9917C62.2941 64.9917 55.4671 49.8089 40.4932 48.2295C25.5194 46.6501 23.7159 36.5272 23.7159 36.5272" />
+            <path stroke-linecap="round" stroke-width="3" stroke-opacity="0.3" d="M62.2941 145.984C62.2941 145.984 55.4671 161.167 40.4932 162.746C25.5194 164.326 23.7159 174.449 23.7159 174.449" />
+          </svg>
+          <div class="bd-3d-btn__wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 221 42" height="42" width="221" class="bd-3d-btn__path" aria-hidden="true">
+              <path stroke-linecap="round" stroke-width="3" d="M182.674 2H203C211.837 2 219 9.16344 219 18V24C219 32.8366 211.837 40 203 40H18C9.16345 40 2 32.8366 2 24V18C2 9.16344 9.16344 2 18 2H47.8855" />
+            </svg>
+            <div class="bd-3d-btn__outline" aria-hidden="true"></div>
+            <div class="bd-3d-btn__content">
+              <span class="bd-3d-btn__char bd-3d-btn__char--1" id="hero-cta-form-text">
+                <span data-label="S" style="--i:1">S</span>
+                <span data-label="o" style="--i:2">o</span>
+                <span data-label="l" style="--i:3">l</span>
+                <span data-label="i" style="--i:4">i</span>
+                <span data-label="c" style="--i:5">c</span>
+                <span data-label="i" style="--i:6">i</span>
+                <span data-label="t" style="--i:7">t</span>
+                <span data-label="a" style="--i:8">a</span>
+                <span data-label="r" style="--i:9">r</span>
+              </span>
+              <div class="bd-3d-btn__icon" aria-hidden="true"><div></div></div>
+              <span class="bd-3d-btn__char bd-3d-btn__char--2" id="hero-cta-form-text-go">
+                <span data-label="E" style="--i:1">E</span>
+                <span data-label="n" style="--i:2">n</span>
+                <span data-label="v" style="--i:3">v</span>
+                <span data-label="i" style="--i:4">i</span>
+                <span data-label="a" style="--i:5">a</span>
+                <span data-label="r" style="--i:6">r</span>
+              </span>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre-nosotros" class="page-section about-section" aria-labelledby="about-title">
+    <div class="about-inner">
+      <h2 id="about-title">Burguar Dreams: corporate housing en Barcelona</h2>
+      <p id="about-p1">Burguar Dreams gestiona apartamentos amueblados en Barcelona para particulares y empresas.</p>
+      <p id="about-p2">Nuestros inmuebles están en el Eixample, Les Corts y zona Francesc Macià, bien comunicados en metro, bus y TRAM.</p>
+      <p id="about-p3">Atención personalizada para empresas y particulares, con respuesta rápida y acompañamiento durante todo el proceso.</p>
+    </div>
+  </section>
+
+  <section id="hogar" class="page-section properties-section apartment-deck-section">
+      <div class="section-label" data-reveal="left">
+        <div class="section-label-head">
+          <h2 id="section-title-text">Apartamentos listos para tu equipo</h2>
+          <span class="count-badge" id="section-count-text">4 inmuebles</span>
+        </div>
+        <p class="section-sub" id="section-sub-text">4 ubicaciones en Eixample · Entrada inmediata o fecha concertada</p>
+      </div>
+      <div class="apartment-deck-scene" id="apartment-deck-scene">
+        <p class="apartment-deck-hint" id="apartment-deck-hint">Elige un apartamento</p>
+        <div class="apartment-deck-world">
+          <div class="apartment-deck" id="properties-grid"></div>
+        </div>
+        <div class="apartment-deck-copy" id="apartment-deck-copy" aria-hidden="true">
+          <h3 id="apartment-deck-copy-title">Elige tu próximo hogar</h3>
+          <p id="apartment-deck-copy-body">Haz clic en una tarjeta para ver el apartamento</p>
+        </div>
+      </div>
+  </section>
+
+  <section id="empresas" class="page-section corporate-section">
+      <div class="corporate-hero" data-tsa-section>
+        <div class="corporate-hero-text">
+          <p class="hero-eyebrow" style="color:var(--accent)" id="corp-eyebrow-text" data-tsa="chars">Corporate Housing</p>
+          <h2 id="corp-title-text" data-tsa="chars">Alojamiento para los <em>trabajadores de tu empresa</em></h2>
+          <p id="corp-sub-text" data-tsa="chars">Centralizamos el alquiler para profesionales en movilidad, expatriados y rotaciones. Facturación y contrato adaptados a la empresa — sin permanencia obligatoria.</p>
+          <div class="corp-cta-group">
+            <a href="https://wa.me/34660688501"
+               target="_blank" rel="noopener" class="btn-quiero btn-glow btn-glow--whatsapp" id="corp-wa-link" style="display:inline-flex;text-decoration:none" data-tsa="block">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+              <span id="corp-cta-text">Pedir propuesta para mi empresa</span>
+            </a>
+            <button type="button" class="corp-cta-form-link" id="corp-form-btn" onclick="openModal()" data-tsa="block">
+              <span id="corp-cta-form-text">O envíanos una solicitud por formulario</span>
+            </button>
+          </div>
+        </div>
+        <div class="corporate-hero-img" data-tsa="media">
+          <img src="./assets/images/properties/granvia/Menjador.jpg" alt="Salón corporate housing Barcelona — Burguar Dreams" onerror="this.parentElement.style.background='var(--sand)'">
+        </div>
+      </div>
+
+      <div class="corporate-features" data-tsa-section>
+        <div class="corp-feature">
+          <div class="corp-feature-icon" data-tsa="icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="20" height="20" rx="2"/><path d="M4 10h20"/><path d="M10 4v6"/><path d="M18 4v6"/></svg>
+          </div>
+          <h3 id="corp-f1t-text" data-tsa="chars">Flexibilidad total</h3>
+          <p id="corp-f1-text" data-tsa="block">Entrada y salida según el proyecto, sin atarte a años. Contratos mensuales sin permanencia.</p>
+        </div>
+        <div class="corp-feature">
+          <div class="corp-feature-icon" data-tsa="icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3L3 9v10l11 6 11-6V9z"/><path d="M14 3v18"/><path d="M3 9l11 6 11-6"/></svg>
+          </div>
+          <h3 id="corp-f2t-text" data-tsa="chars">Apartamentos listos</h3>
+          <p id="corp-f2-text" data-tsa="block">Totalmente amueblados y equipados. El trabajador llega y empieza a vivir desde el primer día.</p>
+        </div>
+        <div class="corp-feature">
+          <div class="corp-feature-icon" data-tsa="icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="14" cy="14" r="10"/><path d="M14 8v6l4 2"/></svg>
+          </div>
+          <h3 id="corp-f3t-text" data-tsa="chars">Gestión sencilla</h3>
+          <p id="corp-f3-text" data-tsa="block">Un contacto para varios apartamentos y varios trabajadores. Atención personalizada y respuesta rápida.</p>
+        </div>
+        <div class="corp-feature">
+          <div class="corp-feature-icon" data-tsa="icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 14s2-4 9-4 9 4 9 4-2 4-9 4-9-4-9-4z"/><circle cx="14" cy="14" r="2"/></svg>
+          </div>
+          <h3 id="corp-f4t-text" data-tsa="chars">Ubicaciones prime</h3>
+          <p id="corp-f4-text" data-tsa="block">Apartamentos en el corazón del Eixample de Barcelona. Bien comunicados con transporte público y servicios.</p>
+        </div>
+      </div>
+  </section>
+
+  <section id="guia" class="page-section guide-section" aria-labelledby="guide-title">
+    <div class="guide-waves" id="guide-waves" aria-hidden="true"></div>
+    <div class="guide-inner">
+      <h2 id="guide-title">Corporate housing vs alquiler temporal en Barcelona</h2>
+      <div id="guide-body" class="guide-body"></div>
+    </div>
+  </section>
+
+  <section id="faq" class="page-section faq-section">
+      <div class="faq-inner">
+        <p class="hero-eyebrow" style="color:var(--accent);margin-bottom:1rem" data-reveal="left">FAQ</p>
+        <h2 id="faq-title-text" style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--warm-dark);margin-bottom:3rem" data-reveal="right">Preguntas frecuentes</h2>
+        <div class="faq-list" id="faq-list"></div>
+        <div class="faq-cta" id="faq-cta" data-reveal="right">
+          <p class="faq-cta-text" id="faq-cta-text">¿Tu caso es corporativo?</p>
+          <button type="button" class="btn-quiero btn-glow btn-glow--accent" id="faq-cta-btn" onclick="scrollToSection('empresas')">
+            <span id="faq-cta-btn-text">Pedir propuesta</span>
+          </button>
+        </div>
+      </div>
+  </section>
+
+</div>
+
+<!-- ─────────────── DETAIL VIEW ─────────────── -->
+<div id="detail-view">
+  <div class="detail-hero">
+    <button type="button" class="detail-back-arrow" id="detail-back-arrow" onclick="scrollToSection('hogar')" aria-label="Volver a apartamentos">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 5L8 12l7 7"/>
+      </svg>
+      <span class="sr-only" id="back-label">Volver</span>
+    </button>
+    <div id="detail-hero-img-wrap" data-reveal="right">
+      <div class="detail-hero-placeholder">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="#C4B8A4" stroke-width="1.5">
+          <rect x="10" y="30" width="60" height="40" rx="2"/>
+          <path d="M10 30L40 8l30 22"/><rect x="30" y="50" width="20" height="20"/>
+        </svg>
+      </div>
+    </div>
+    <div class="detail-hero-overlay"></div>
+  </div>
+
+  <div class="detail-body">
+    <div class="detail-header">
+      <div data-reveal="left">
+        <p class="detail-tag" id="d-tag"></p>
+        <h1 class="detail-title" id="d-title"></h1>
+        <p class="detail-address" id="d-address"></p>
+        <span class="availability-badge" id="d-availability"></span>
+      </div>
+      <div class="detail-price-block detail-cta-block" data-reveal="right">
+        <div class="detail-price" id="d-price"></div>
+        <button type="button" class="btn-quiero btn-glow btn-glow--accent" id="btn-interest" onclick="openModal()">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M3 3h12v10H3z"/><path d="M3 6l6 4 6-4"/>
+          </svg>
+          <span id="btn-interest-label">Me interesa</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="detail-specs" id="d-specs"></div>
+
+    <!-- Description block -->
+    <div class="detail-description-block" data-reveal="left">
+      <h3 id="detail-about-h3">Sobre la propiedad</h3>
+      <p id="d-description"></p>
+    </div>
+
+    <!-- Amenities checklist -->
+    <div class="amenities-section" data-reveal="right">
+      <h3 id="detail-amenities-h3">Equipamiento</h3>
+      <div class="amenities-groups" id="d-amenities"></div>
+    </div>
+
+    <div class="detail-video" id="d-video" hidden></div>
+    <div class="detail-floorplan" id="d-floorplan" hidden>
+      <h3 id="detail-floorplan-h3">Plano</h3>
+      <div class="detail-floorplan-img-wrap" id="d-floorplan-img"></div>
+      <p class="detail-floorplan-pdf-wrap" id="d-floorplan-pdf-wrap" hidden>
+        <a class="detail-floorplan-pdf-link" id="d-floorplan-pdf-link" href="#" target="_blank" rel="noopener noreferrer">
+          <span id="detail-floorplan-pdf-text">Ver plano en PDF</span>
+        </a>
+      </p>
+    </div>
+    <div class="detail-gallery" id="d-gallery">
+      <p class="detail-gallery-hint" id="d-gallery-hint" hidden>
+        <span id="detail-gallery-hint-text">Toca cualquier imagen para verla en detalle</span>
+        <img class="detail-gallery-hint-gif" id="detail-gallery-hint-gif" alt="" width="32" height="32" decoding="async">
+      </p>
+      <div class="detail-gallery-viewport" id="d-gallery-viewport">
+        <div class="detail-photos" id="d-photos"></div>
+      </div>
+    </div>
+
+    <!-- Surroundings / nearby services (debajo de las fotos) -->
+    <div class="amenities-section surroundings-section" id="surroundings-section" data-reveal="left" hidden>
+      <h3 id="detail-surroundings-h3">Entorno y servicios cercanos</h3>
+      <div class="amenities-groups" id="d-surroundings"></div>
+    </div>
+  </div>
+
+  <div class="detail-sticky-cta" id="detail-sticky-cta" role="group" aria-label="Acciones de contacto">
+    <a href="https://wa.me/34660688501" target="_blank" rel="noopener" class="detail-sticky-btn detail-sticky-wa" id="detail-sticky-wa">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+      <span id="detail-sticky-wa-label">WhatsApp</span>
+    </a>
+    <button type="button" class="detail-sticky-btn detail-sticky-form btn-glow btn-glow--accent" onclick="openModal()">
+      <span id="detail-sticky-form-label">Solicitar disponibilidad y visita</span>
+    </button>
+  </div>
+</div>
+
+<!-- ─────────────── LIGHTBOX ─────────────── -->
+<div class="lightbox" id="lightbox" onclick="closeLightboxOnBg(event)">
+  <img class="lightbox-img" id="lightbox-img" src="" alt="">
+  <button type="button" class="lightbox-close" onclick="closeLightbox()" aria-label="Cerrar">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l10 10M13 3L3 13"/></svg>
+  </button>
+  <button class="lightbox-prev" onclick="lightboxNav(-1)">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4L6 9l5 5"/></svg>
+  </button>
+  <button class="lightbox-next" onclick="lightboxNav(1)">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 4l5 5-5 5"/></svg>
+  </button>
+  <div class="lightbox-counter" id="lightbox-counter"></div>
+</div>
+
+<!-- ─────────────── MODAL ─────────────── -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-text" style="max-width:580px;max-height:90vh;overflow-y:auto">
+    <button type="button" class="modal-close" onclick="closeModal()" aria-label="Cerrar">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M5 5l10 10M15 5L5 15"/>
+      </svg>
+    </button>
+
+    <div class="modal-form" id="modal-form">
+      <p class="modal-eyebrow" id="modal-eyebrow-text">Consulta de disponibilidad</p>
+      <h2 id="modal-title-text">Solicitar disponibilidad</h2>
+      <p class="modal-intro" id="modal-intro-text">Indica fechas y número de personas. Te respondemos en menos de 24 h con disponibilidad y condiciones — sin compromiso.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-nombre" id="label-nombre">Nombre</label>
+          <input type="text" id="f-nombre" placeholder="Tu nombre">
+          <span class="form-field-error" id="error-nombre" role="alert"></span>
+        </div>
+        <div class="form-group">
+          <label for="f-apellidos" id="label-apellidos">Apellidos</label>
+          <input type="text" id="f-apellidos" placeholder="Tus apellidos">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-email" id="label-email">Email</label>
+          <input type="email" id="f-email" placeholder="tu@email.com">
+        </div>
+        <div class="form-group">
+          <label for="f-telefono" id="label-telefono">Teléfono *</label>
+          <input type="tel" id="f-telefono" placeholder="Teléfono de contacto (empresa o particular)">
+          <span class="form-field-error" id="error-telefono" role="alert"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="f-nacimiento" id="label-nacimiento">Fecha de nacimiento</label>
+        <input type="date" id="f-nacimiento">
+      </div>
+
+      <div class="form-group">
+        <label for="f-laboral" id="label-laboral">Situación laboral</label>
+        <p class="form-field-hint" id="hint-laboral"></p>
+        <select id="f-laboral">
+          <option value="" id="f-laboral-0">Selecciona una opción</option>
+          <option id="f-laboral-1">Empleado por cuenta ajena</option>
+          <option id="f-laboral-2">Autónomo / Freelance</option>
+          <option id="f-laboral-3">Funcionario</option>
+          <option id="f-laboral-4">Estudiante</option>
+          <option id="f-laboral-5">Jubilado</option>
+          <option id="f-laboral-6">En búsqueda de empleo</option>
+          <option id="f-laboral-7">Otro</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="f-ingresos" id="label-ingresos">Ingresos mensuales netos</label>
+        <p class="form-field-hint" id="hint-ingresos"></p>
+        <select id="f-ingresos">
+          <option value="" id="f-ingresos-0">Selecciona una opción</option>
+          <option id="f-ingresos-1">Menos de 1.000 €</option>
+          <option id="f-ingresos-2">Entre 1.000 € y 1.500 €</option>
+          <option id="f-ingresos-3">Entre 1.500 € y 2.500 €</option>
+          <option id="f-ingresos-4">Entre 2.500 € y 4.000 €</option>
+          <option id="f-ingresos-5">Más de 4.000 €</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="f-personas" id="label-personas">Número de personas que vivirán allí</label>
+        <select id="f-personas">
+          <option value="" id="f-personas-0">Selecciona una opción</option>
+          <option id="f-personas-1">1 persona</option>
+          <option id="f-personas-2">2 personas</option>
+          <option id="f-personas-3">3 personas</option>
+          <option id="f-personas-4">4 personas</option>
+          <option id="f-personas-5">5 o más personas</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label id="label-mascotas">Mascotas</label>
+        <div style="display:flex;gap:1rem;margin-top:0.3rem">
+          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.88rem;font-weight:300;color:var(--warm-dark);text-transform:none;letter-spacing:0;cursor:pointer">
+            <input type="radio" name="f-mascotas" id="f-mascotas-no" value="No" checked style="accent-color:var(--accent);width:16px;height:16px">
+            <span id="mascotas-no-label">No</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.88rem;font-weight:300;color:var(--warm-dark);text-transform:none;letter-spacing:0;cursor:pointer">
+            <input type="radio" name="f-mascotas" id="f-mascotas-si" value="Sí" style="accent-color:var(--accent);width:16px;height:16px">
+            <span id="mascotas-si-label">Sí</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group form-group-consent">
+        <label class="form-consent-label">
+          <input type="checkbox" id="f-privacidad" name="f-privacidad" value="1">
+          <span id="label-privacidad">He leído la <button type="button" class="form-privacy-link" onclick="event.preventDefault();event.stopPropagation();openPrivacyModal()">política de privacidad</button> y acepto el tratamiento de mis datos *</span>
+        </label>
+        <span class="form-field-error" id="error-privacidad" role="alert"></span>
+      </div>
+
+      <p class="form-global-error" id="form-global-error" role="alert"></p>
+      <button type="button" class="btn-submit btn-glow" id="btn-send" onclick="submitForm()"><span class="btn-send-text" id="btn-send-text">Recibir disponibilidad y condiciones</span></button>
+    </div>
+
+    <div class="modal-success" id="modal-success">
+      <div class="success-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <h3 id="success-title-text">¡Solicitud enviada!</h3>
+      <p id="success-desc-text">Hemos recibido tu solicitud. Te contactaremos en menos de 24 h con opciones acordes a tus fechas y número de personas.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────── CONTACTO + FOOTER ─────────────── -->
+<section class="contact-section page-section" id="contacto">
+  <div class="contact-inner">
+    <div class="contact-left" data-reveal="left">
+      <p class="contact-eyebrow" id="contact-eyebrow-text">Contacto</p>
+      <h2 id="contact-title-text">¿Necesitas alojamiento <em>para tu empresa en Barcelona?</em></h2>
+      <p id="contact-sub-text">Cuéntanos cuántas personas, fechas y zona preferida. Te proponemos opciones y coordinamos visitas o entrada directa.</p>
+
+      <div class="contact-actions">
+        <p class="contact-wa-hint" id="contact-wa-hint">Respuesta habitual en el mismo día laborable</p>
+        <a class="btn-whatsapp btn-whatsapp-primary" id="contact-wa-link"
+           href="https://wa.me/34660688501"
+           target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+          </svg>
+          <span id="contact-whatsapp-text">Escríbenos por WhatsApp</span>
+        </a>
+        <div class="contact-form-secondary">
+          <button type="button" class="btn-contact-form btn-glow btn-glow--outline" id="contact-form-btn" onclick="openModal()">
+            <span id="contact-form-btn-text">Enviar solicitud (empresa o particular)</span>
+          </button>
+          <p class="contact-form-note" id="contact-form-note">Sin compromiso · Respuesta en menos de 24 h · Atención en ES / EN / FR</p>
+        </div>
+      </div>
+
+      <div class="contact-channels">
+        <div class="contact-channel">
+          <div class="contact-channel-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M2 2h12v10H2z"/><path d="M2 4l6 4 6-4"/>
+            </svg>
+          </div>
+          <a href="mailto:burguardreams@gmail.com" class="contact-channel-link">burguardreams@gmail.com</a>
+        </div>
+        <div class="contact-channel">
+          <div class="contact-channel-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M3 2h3l1.5 3.5-1.8 1.1a9 9 0 0 0 3.7 3.7l1.1-1.8L14 10v3a1 1 0 0 1-1 1C5.2 14 2 7.8 2 3a1 1 0 0 1 1-1z"/>
+            </svg>
+          </div>
+          <a href="tel:+34660688501" class="contact-channel-link">660 68 85 01</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-right">
+      <div class="contact-card" data-reveal="right" data-reveal-delay="1">
+        <div class="contact-card-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M10 2C7.24 2 5 4.24 5 7c0 4.25 5 11 5 11s5-6.75 5-11c0-2.76-2.24-5-5-5z"/>
+            <circle cx="10" cy="7" r="2"/>
+          </svg>
+        </div>
+        <div>
+          <p class="contact-card-label" id="contact-location-label">Ubicación</p>
+          <p class="contact-card-value">Barcelona, España</p>
+        </div>
+      </div>
+
+      <div class="contact-card" data-reveal="right" data-reveal-delay="2">
+        <div class="contact-card-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 4h14v12H3z"/><path d="M3 6l7 5 7-5"/>
+          </svg>
+        </div>
+        <div>
+          <p class="contact-card-label" id="contact-email-label">Email</p>
+          <p class="contact-card-value">
+            <a href="mailto:burguardreams@gmail.com">burguardreams@gmail.com</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="contact-card" data-reveal="right" data-reveal-delay="3">
+        <div class="contact-card-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 3h3l1.5 3.5-1.8 1.1a9 9 0 0 0 3.7 3.7l1.1-1.8L15 11v3a1 1 0 0 1-1 1C6.2 15 3 8.8 3 4a1 1 0 0 1 1-1z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="contact-card-label" id="contact-phone-label">Teléfono / WhatsApp</p>
+          <p class="contact-card-value">
+            <a href="tel:+34660688501">660 68 85 01</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="contact-card" data-reveal="right" data-reveal-delay="4">
+        <div class="contact-card-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="10" cy="10" r="7"/>
+            <path d="M10 6v4l3 2"/>
+          </svg>
+        </div>
+        <div>
+          <p class="contact-card-label" id="contact-hours-label">Horario</p>
+          <p class="contact-card-value" id="contact-hours-value">Lun – Vie, 9h – 19h</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <a href="#" class="logo footer-logo" onclick="return showHome()">Burguar <span>Dreams</span></a>
+    <div class="footer-center">
+      <p class="footer-legal-id" id="footer-legal-id">Burguar Dreams S.L. · NIF B67209502 · Barcelona</p>
+      <p class="footer-trust" id="footer-trust-text">Gestión directa · Apartamentos en Eixample · Corporate housing desde 1 mes</p>
+      <p class="footer-copy" id="footer-copy-text">© 2026 Burguar Dreams · Todos los derechos reservados</p>
+    </div>
+    <div class="footer-links">
+      <button type="button" class="footer-legal-link" id="footer-legal-link" onclick="openLegalModal()">Aviso Legal</button>
+      <span class="footer-separator" aria-hidden="true">·</span>
+      <button type="button" class="footer-legal-link" id="footer-privacy-link" onclick="openPrivacyModal()">Privacidad</button>
+      <span class="footer-separator" aria-hidden="true">·</span>
+      <button type="button" class="footer-legal-link" id="footer-cookies-link" onclick="openCookiesModal()">Cookies</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── COOKIE BANNER ─────────────── -->
+<div class="cookie-banner" id="cookie-banner" role="region" aria-label="Consentimiento de cookies" hidden>
+  <p class="cookie-banner-text" id="cookie-banner-text">Usamos cookies técnicas y, si las aceptas, cookies de análisis. Puedes cambiar tu elección en cualquier momento.</p>
+  <div class="cookie-banner-actions">
+    <button type="button" class="cookie-btn cookie-btn-accept" id="cookie-accept-btn">Aceptar</button>
+    <button type="button" class="cookie-btn cookie-btn-reject" id="cookie-reject-btn">Rechazar</button>
+    <button type="button" class="cookie-btn cookie-btn-link" id="cookie-config-btn">Configurar</button>
+  </div>
+</div>
+
+<!-- ─────────────── AVISO LEGAL ─────────────── -->
+<div class="modal-overlay" id="legal-modal-overlay" onclick="handleLegalOverlayClick(event)">
+  <div class="modal legal-modal" role="dialog" aria-labelledby="legal-modal-title" aria-modal="true">
+    <button type="button" class="modal-close" id="legal-modal-close" onclick="closeLegalModal()" aria-label="Cerrar">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M5 5l10 10M15 5L5 15"/>
+      </svg>
+    </button>
+    <div id="legal-modal-body"></div>
+  </div>
+</div>
+
+<!-- ─────────────── POLÍTICA DE PRIVACIDAD ─────────────── -->
+<div class="modal-overlay" id="privacy-modal-overlay" onclick="handlePrivacyOverlayClick(event)">
+  <div class="modal legal-modal" role="dialog" aria-labelledby="privacy-modal-title" aria-modal="true">
+    <button type="button" class="modal-close" id="privacy-modal-close" onclick="closePrivacyModal()" aria-label="Cerrar">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M5 5l10 10M15 5L5 15"/>
+      </svg>
+    </button>
+    <div id="privacy-modal-body"></div>
+  </div>
+</div>
+
+<!-- ─────────────── POLÍTICA DE COOKIES ─────────────── -->
+<div class="modal-overlay" id="cookies-modal-overlay" onclick="handleCookiesOverlayClick(event)">
+  <div class="modal legal-modal" role="dialog" aria-labelledby="cookies-modal-title" aria-modal="true">
+    <button type="button" class="modal-close" id="cookies-modal-close" onclick="closeCookiesModal()" aria-label="Cerrar">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M5 5l10 10M15 5L5 15"/>
+      </svg>
+    </button>
+    <div id="cookies-modal-body"></div>
+  </div>
+</div>
+
+</div><!-- /#bd-page -->
+
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script defer src="js/config.js?v=20261016a"></script>
+<script defer src="js/data/amenities.js"></script>
+<script defer src="js/data/properties.js?v=20261004a"></script>
+<script defer src="js/data/surroundings.js?v=20261004a"></script>
+<script defer src="js/data/i18n.js?v=20261004a"></script>
+<script defer src="js/data/faqs.js"></script>
+<script defer src="js/seo.js?v=20261004a"></script>
+<script defer src="js/legal/legal-i18n.js?v=20261016a"></script>
+<script defer src="js/ui/apartment-deck.js?v=20261004a"></script>
+<script defer src="js/ui/grid.js?v=20261004a"></script>
+<script defer src="js/ui/circular-gallery.js?v=20261004a"></script>
+<script defer src="js/ui/coverflow-gallery.js?v=20261004a"></script>
+<script defer src="js/ui/video-player.js?v=20261004a"></script>
+<script defer src="js/ui/variable-font-hover.js?v=20261004a"></script>
+<script defer src="js/ui/3d-button.js?v=20261004a"></script>
+<script defer src="js/ui/wave-background.js?v=20261004a"></script>
+<script defer src="js/ui/detail.js?v=20261004a"></script>
+<script defer src="js/ui/page-transition.js?v=20261004a"></script>
+<script defer src="js/ui/text-scroll-animation.js?v=20261004a"></script>
+<script defer src="js/ui/modal.js"></script>
+<script defer src="js/ui/cookies.js"></script>
+<script defer src="js/ui/lazy-images.js"></script>
+<script defer src="js/ui/mobile-nav.js"></script>
+<script defer src="js/ui/button-hover.js"></script>
+<script defer src="js/ui/scroll-reveal.js"></script>
+<script defer src="js/ui/momentum-scroll.js?v=20261004a"></script>
+<script defer src="js/ui/scroll-progress.js?v=20261005a"></script>
+<script defer src="js/ui/lightbox.js"></script>
+<script defer src="js/ui/i18n.js?v=20261004a"></script>
+<script defer src="js/ui/theme.js?v=20261004a"></script>
+<script defer src="js/api/submit-form.js"></script>
+<script defer src="js/app.js?v=20261004a"></script>
+<!-- Start of HubSpot Embed Code -->
+<script type="text/javascript" id="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/148613372.js"></script>
+<!-- End of HubSpot Embed Code -->
+</body>
+</html>

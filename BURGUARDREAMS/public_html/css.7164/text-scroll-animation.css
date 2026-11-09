@@ -1,0 +1,69 @@
+/* Text Scroll Animation — assemble por scroll */
+
+.tsa-section .tsa-chars {
+  perspective: 600px;
+  transform-style: flat;
+}
+
+.tsa-char {
+  display: inline-block;
+  will-change: transform, opacity;
+  transform-origin: 50% 80%;
+  backface-visibility: hidden;
+}
+
+.tsa-char.is-space {
+  white-space: pre;
+}
+
+.tsa-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.tsa-media {
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+.tsa-icon {
+  will-change: transform, opacity;
+  transform-origin: center center;
+  display: inline-block;
+}
+
+.tsa-block {
+  will-change: transform, opacity;
+}
+
+@media (max-width: 900px) {
+  .tsa-section,
+  [data-tsa-section] {
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
+  .tsa-word {
+    white-space: normal;
+    max-width: 100%;
+  }
+
+  .tsa-chars {
+    max-width: 100%;
+  }
+
+  .tsa-media,
+  .tsa-icon,
+  .tsa-block {
+    max-width: 100%;
+  }
+}
+
+/* Siempre visible (Windows reduced-motion no debe anularla) */
+@media (prefers-reduced-motion: reduce) {
+  .tsa-char,
+  .tsa-media,
+  .tsa-block {
+    transition: none;
+  }
+}

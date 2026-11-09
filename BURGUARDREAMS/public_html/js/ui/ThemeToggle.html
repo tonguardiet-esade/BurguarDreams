@@ -1,0 +1,40 @@
+<!--
+  ThemeToggle — interruptor cinematográfico sol/luna (Vanilla).
+  Requisitos: css/theme.css + js/ui/theme.js
+  El script busca cualquier [data-theme-toggle] y lo conecta solo.
+-->
+<button
+  type="button"
+  class="theme-toggle"
+  data-theme-toggle
+  role="switch"
+  aria-checked="false"
+  aria-label="Activar modo oscuro"
+  title="Activar modo oscuro"
+>
+  <span class="theme-toggle__groove" aria-hidden="true"></span>
+  <span class="theme-toggle__gloss" aria-hidden="true"></span>
+  <span class="theme-toggle__ao" aria-hidden="true"></span>
+  <span class="theme-toggle__track-icons" aria-hidden="true">
+    <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+    </svg>
+    <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+    </svg>
+  </span>
+  <span class="theme-toggle__thumb">
+    <span class="theme-toggle__thumb-shine" aria-hidden="true"></span>
+    <span class="theme-toggle__particles" aria-hidden="true"></span>
+    <span class="theme-toggle__thumb-icon">
+      <svg class="theme-toggle__thumb-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+      </svg>
+      <svg class="theme-toggle__thumb-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+      </svg>
+    </span>
+  </span>
+</button>

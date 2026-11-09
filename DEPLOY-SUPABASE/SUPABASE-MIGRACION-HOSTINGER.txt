@@ -1,0 +1,136 @@
+MIGRACIÓN INTEGRAL A SUPABASE — HOSTINGER
+=========================================
+
+IMPORTANTE
+----------
+- Haz copia de los dos .env y de data/ antes de empezar.
+- No borres burguar.db ni las carpetas antiguas hasta terminar las pruebas.
+- Los ZIP no contienen contraseñas ni claves de Supabase.
+- Extrae cada ZIP en la carpeta indicada, no en assets/.
+
+LÍMITES DEL PLAN GRATUITO COMPROBADOS
+-------------------------------------
+- PostgreSQL: 500 MB de cuota.
+- Storage: 1 GB.
+- Tamaño máximo por archivo: 50 MB.
+- Archivos preparados para importar: aproximadamente 15,73 MB.
+
+PASO 0 — CLAVES DE STORAGE
+--------------------------
+1. Entra en Supabase y abre el proyecto conectado a RentiaAgent.
+2. Settings > API Keys.
+3. Copia una clave Secret (o la antigua service_role).
+4. En Hostinger abre:
+     api.rentiagent.com/.env
+   (el .env que está al mismo nivel que public_html).
+5. Añade al final:
+
+SUPABASE_URL=https://uvvdyylyfiuwtohhbcxr.supabase.co
+SUPABASE_SECRET_KEY=PEGA_AQUI_LA_CLAVE_SECRET
+SUPABASE_STORAGE_BUCKET=intranet-files
+
+No pongas esta clave en app.rentiagent.com ni dentro de ningún JavaScript.
+
+PASO 1 — API PRINCIPAL Y ESQUEMA
+--------------------------------
+ZIP: 01-supabase-schema-api.zip
+Destino: api.rentiagent.com/public_html/
+
+1. Entra DENTRO de public_html.
+2. Sube el ZIP y extráelo ahí.
+3. Sobrescribe archivos.
+4. NO borres ni reemplaces el .env.
+5. Abre:
+   https://api.rentiagent.com/intranet-check.php
+
+Debe mostrar:
+  "ok": true
+  "uses_supabase": true
+  "supabase_storage_configured": true
+  migraciones 001, 002, 003 y 004.
+
+La primera visita ejecuta las migraciones idempotentes. No borra datos.
+
+PASO 2 — IMPORTAR PDF Y FOTOS
+-----------------------------
+ZIP: 02-supabase-storage-import.zip
+Destino: api.rentiagent.com/public_html/
+
+1. Extrae el ZIP dentro de public_html.
+2. Abre:
+   https://api.rentiagent.com/storage-import.php
+3. Entra con un usuario administrador de la intranet.
+4. Pulsa "Migrar archivos".
+5. Debe indicar 16 archivos estáticos importados, además de los adjuntos
+   antiguos que encuentre en data/intranet_uploads/.
+6. Cuando termine, BORRA del servidor:
+   public_html/storage-import.php
+   public_html/_storage_import/
+
+PASO 3 — MIGRAR EL CATÁLOGO JSON
+--------------------------------
+1. Abre:
+   https://api.rentiagent.com/catalog-import.php
+2. Entra con el mismo administrador de la intranet.
+3. Ejecuta la importación.
+4. Borra public_html/catalog-import.php cuando termine.
+
+El proceso es idempotente: conserva el snapshot original y copia propiedades,
+inquilinos, contactos, facturas, recibos y liquidaciones a tablas normalizadas.
+
+PASO 4 — ESPEJO DE BURGUARDREAMS
+--------------------------------
+ZIP: 03-burguar-api-mirror.zip
+Destino: burguardreams.com/public_html/api/
+
+1. Entra DENTRO de public_html/api.
+2. Sube el ZIP y extráelo ahí.
+3. Sobrescribe archivos; no borres la carpeta api.
+4. En burguardreams.com/public_html/.env añade también:
+
+SUPABASE_URL=https://uvvdyylyfiuwtohhbcxr.supabase.co
+SUPABASE_SECRET_KEY=LA_MISMA_CLAVE_SECRET
+SUPABASE_STORAGE_BUCKET=intranet-files
+
+5. Comprueba:
+   https://burguardreams.com/api/intranet-check.php
+
+Debe mostrar la misma base, migraciones y recuentos que api.rentiagent.com.
+
+PASO 5 — APP Y SINCRONIZACIÓN DEL NAVEGADOR
+-------------------------------------------
+ZIP: 04-app-cloud-sync.zip
+Destino: app.rentiagent.com/public_html/
+
+Extrae y sobrescribe index.html. El ZIP añade cloud-bootstrap.js.
+Este cargador conserva el bundle actual y sincroniza en Supabase:
+  - chats de ayuda;
+  - chats de Renti;
+  - notificaciones leídas u ocultas.
+
+Después pulsa Ctrl+F5 y vuelve a iniciar sesión.
+
+PASO 6 — INTRANET ANTIGUA (OPCIONAL)
+------------------------------------
+ZIP: 05-legacy-intranet-cloud-sync.zip
+Destino: burguardreams.com/public_html/intranet/
+
+Extrae y sobrescribe index.html. Mantiene el acceso antiguo sincronizado con
+la misma API. Si esa URL solo redirige a app.rentiagent.com, puedes omitirlo.
+
+PRUEBAS FINALES
+---------------
+1. Login en app.rentiagent.com.
+2. Editar un contrato y recargar.
+3. Editar suministros y recargar.
+4. Crear ticket y comentario.
+5. Subir y abrir un PDF.
+6. Abrir la app en otro navegador y comprobar chats/notificaciones.
+7. Comparar los dos intranet-check.php.
+
+REVERSIÓN
+---------
+- Restaura los PHP anteriores si falla la API.
+- Restaura el index.html anterior si falla la app.
+- Los cambios SQL son aditivos; no eliminan tablas ni datos existentes.
+- Los adjuntos conservan legacy_storage_path para leer la copia de Hostinger.

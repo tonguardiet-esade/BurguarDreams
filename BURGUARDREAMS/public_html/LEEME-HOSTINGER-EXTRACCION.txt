@@ -1,0 +1,26 @@
+BURGURAR DREAMS — CÓMO EXTRAER EN HOSTINGER
+============================================
+
+Si el ZIP grande (500+ MB) deja solo api/ y pocos archivos, la extracción
+se cortó. Usa los 3 ZIP en este orden (todos en la MISMA carpeta public_html):
+
+  1) burguardreams-public_html-PART1-CORE-hostinger-LINUX.zip
+  2) burguardreams-public_html-PART2-assets-imagenes-hostinger-LINUX.zip
+  3) burguardreams-public_html-PART3-videos-hostinger-LINUX.zip
+
+PASOS
+-----
+1. Entra en public_html (donde está la carpeta api).
+2. Sube PART1 → Extraer aquí → debe aparecer carpeta intranet/, css/, js/, index.html
+3. Sube PART2 → Extraer aquí → debe aparecer carpeta assets/ (imágenes)
+4. Sube PART3 → Extraer aquí → assets/videos/*.mp4
+
+COMPROBAR
+---------
+- public_html/intranet/index.html existe
+- public_html/intranet/assets/index-CYJRLkJz.js (~1,5 MB)
+- public_html/css/ y public_html/js/ existen
+- https://burguardreams.com/intranet/assets/index-CYJRLkJz.js → código JavaScript
+
+NO extraigas dentro de api/ ni dentro de intranet/.
+NO borres .env si ya lo configuraste (Supabase).

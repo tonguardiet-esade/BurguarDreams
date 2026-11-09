@@ -1,0 +1,24 @@
+VERIFICACIÓN DEL PAQUETE
+========================
+Fecha: 2026-11-09
+
+OK — Las migraciones 001, 002, 003 y 004 se ejecutaron contra el PostgreSQL
+de Supabase dentro de una transacción de prueba y se revirtieron con ROLLBACK.
+No se conservaron cambios de la prueba.
+
+OK — cloud-bootstrap.js supera la comprobación de sintaxis de Node.
+OK — Los módulos Python de base de datos compilan correctamente.
+OK — Revisión final de PHP/SQL sin fallos bloqueantes o de severidad alta.
+OK — Los ZIP no contienen .env, __pycache__ ni archivos .pyc.
+OK — La API canónica y el espejo local tienen el mismo código activo.
+OK — Producción seguía saludable antes del despliegue:
+     api.rentiagent.com                -> Supabase, renta c1 = 1000
+     burguardreams.com/api             -> Supabase, renta c1 = 1000
+
+Pruebas que requieren extracción en Hostinger:
+- ejecución real y persistente de las migraciones;
+- creación del bucket con la clave Secret;
+- subida/descarga real de PDF;
+- sincronización entre dos navegadores.
+
+Sigue SUPABASE-MIGRACION-HOSTINGER.txt en orden.

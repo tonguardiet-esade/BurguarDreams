@@ -1,0 +1,29 @@
+ERROR 409 AL REEMPLAZAR CARPETA "intranet"
+============================================
+
+NO uses "Reemplazar carpeta". Haz esto:
+
+OPCION A (ZIP — la mas facil)
+-----------------------------
+1. Sube el archivo:  intranet-SUBIR.zip  (esta en public_html)
+2. En Hostinger, entra en public_html/intranet/
+3. Sube el ZIP ahi dentro.
+4. Clic derecho en el ZIP > Extraer.
+5. Confirma sobrescribir archivos (SI).
+6. Borra el ZIP del servidor cuando termine.
+
+OPCION B (sin ZIP)
+------------------
+1. Abre public_html/intranet/ en el gestor de archivos.
+2. Borra SOLO lo de dentro: carpeta assets, index.html, favicon...
+   (no borres la carpeta intranet vacia).
+3. Desde tu PC, sube el CONTENIDO de tu intranet local
+   (assets + index.html + fichas + property-photos + favicons).
+
+OPCION C (renombrar)
+--------------------
+1. Renombra en el servidor: intranet  ->  intranet_vieja
+2. Crea carpeta nueva: intranet
+3. Sube todo el contenido local dentro.
+
+Despues: Ctrl+F5 en el navegador.

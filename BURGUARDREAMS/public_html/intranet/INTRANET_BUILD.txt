@@ -1,0 +1,3 @@
+20261029-groq-only
+- Renti: solo Groq (sin Gemini en producción)
+- JS: index-CkExhfvt.js
